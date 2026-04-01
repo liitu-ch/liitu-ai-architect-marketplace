@@ -3,6 +3,8 @@
     "description": "AI-powered requirements engineering and system modeling plugin for Claude — create requirements catalogs, entity models, use case diagrams, and specifications through guided slash commands.",
     "version": "1.0.0",
     "author": {
-        "name": "Sandro Scalco"
+        "name": "Sandro Scalco",
+        "email": "sandro.scalco@liitu.ch",
+        "url": "https://liitu.ch"
     }
 }

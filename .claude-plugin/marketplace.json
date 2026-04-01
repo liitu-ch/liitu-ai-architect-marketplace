@@ -1,0 +1,15 @@
+{
+    "name": "liitu-ai-architect-marketplace",
+    "owner": {
+        "name": "Sandro Scalco",
+        "email": "sandro.scalco@liitu.ch",
+        "url": "https://liitu.ch"
+    },
+    "plugins": [
+        {
+            "name": "ai-architect-core",
+            "source": "./ai-architect-core",
+            "description": "AI-powered requirements engineering and system modeling plugin for Claude — create requirements catalogs, entity models, use case diagrams, and specifications through guided slash commands."
+        }
+    ]
+}
