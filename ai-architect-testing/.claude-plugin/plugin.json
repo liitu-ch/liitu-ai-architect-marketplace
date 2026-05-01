@@ -1,7 +1,7 @@
 {
     "name": "ai-architect-testing",
     "description": "AI-powered testing plugin for Claude — create test cases, test suites, and test reports through guided slash commands.",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "author": {
         "name": "Sandro Scalco",
         "email": "sandro.scalco@liitu.ch",
