@@ -41,6 +41,37 @@ export default defineConfig({
 });
 ```
 
+## Devices
+
+Test on mobile and tablet devices using Playwright's built-in device profiles. Add a `projects` array to `playwright.config.ts`:
+
+```ts
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./e2e",
+  use: {
+    baseURL: "http://localhost:3000",
+  },
+  projects: [
+    { name: "Chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "Firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "WebKit", use: { ...devices["Desktop Safari"] } },
+    { name: "Pixel 7", use: { ...devices["Pixel 7"] } },
+    { name: "iPad Gen 11", use: { ...devices["iPad (gen 11)"] } },
+  ],
+  webServer: {
+    command: "npm run dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: !process.env.CI,
+  },
+});
+```
+
+Run a specific device with `npx playwright test --project="Pixel 7"`.
+
+Common device names: `"Desktop Chrome"`, `"Desktop Firefox"`, `"Desktop Safari"`, `"Pixel 7"`, `"Pixel 5"`, `"iPhone 15"`, `"iPad (gen 11)"`, `"Galaxy S9+"`.
+
 ## DO NOT
 
 - Use `page.locator()` with CSS/XPath selectors — use accessibility locators (`getByRole`, `getByLabel`, `getByText`, `getByPlaceholder`)
