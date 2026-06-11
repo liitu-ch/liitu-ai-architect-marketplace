@@ -3,6 +3,28 @@
 > Dieses Dokument wird mit dem Plugin `ai-architect-dev-tools` gepflegt (Skill: `/ai-guidelines`).
 > Es ist verbindlich für jede Implementierung — Implementierungspläne (`/ai-implement-use-case`) referenzieren es.
 
+## Supported Platforms & Devices
+
+{Confirmed by the user — every implementation must work on all of these.}
+
+| Platform                          | Devices / Browsers                      | Min. Version / Breakpoints |
+| --------------------------------- | --------------------------------------- | -------------------------- |
+| {e.g., Web (desktop)}             | {e.g., Chrome, Firefox, Safari, Edge}   | {…}                        |
+| {e.g., Web (mobile) / native app} | {e.g., iPhone SE–Pro Max, Android ≥ 10} | {e.g., 360px–1920px}       |
+
+- {Input modes to support, e.g., touch and mouse/keyboard}
+- {Other platform constraints, e.g., offline capability, PWA}
+
+## Non-Functional Requirements
+
+Relevant NFRs from `docs/requirements.md` and what they mean for implementation.
+{If `docs/requirements.md` is missing: note it and recommend creating it with `/ai-requirements`; list user-provided NFRs instead.}
+
+| ID      | Requirement (summary) | Implementation Implication                                                           |
+| ------- | --------------------- | ------------------------------------------------------------------------------------ |
+| NFR-XXX | {e.g., WCAG 2.1 AA}   | {e.g., semantic markup, ARIA-compliant library components, keyboard navigation}      |
+| NFR-XXX | {e.g., TTI < 3s}      | {e.g., lazy-load routes, no heavyweight dependencies without bundle-size assessment} |
+
 ## UI Components
 
 ### Component Library
@@ -71,6 +93,8 @@ Check before completing any implementation task:
 
 - [ ] UI built from existing project or library components — no unnecessary new components
 - [ ] No forbidden styling practices (see above); design tokens used throughout
+- [ ] Works on all supported platforms and devices (see table above)
+- [ ] Relevant NFRs (see table above) are satisfied
 - [ ] New files placed according to the project structure table
 - [ ] Naming conventions followed
 - [ ] State and data access follow the documented patterns
