@@ -6,7 +6,7 @@
 **Use Case Name:** [Descriptive Name]  
 **Primary Actor:** [Role]  
 **Goal:** [What the actor wants to achieve]  
-**Status:** Draft | Review | Approved | Implemented | Tested | Done | Obsolete
+**Status:** Draft | Review | Approved | Implemented | Verified | Revision Required | Obsolete
 
 ## Preconditions
 
@@ -50,15 +50,17 @@
 
 ### Status Values
 
-| Status      | Description                                      |
-| ----------- | ------------------------------------------------ |
-| Draft       | Initial version, still being written.            |
-| Review      | Complete, awaiting stakeholder review.           |
-| Approved    | Reviewed and approved for implementation.        |
-| Implemented | Implementation complete, pending testing.        |
-| Tested      | All tests pass, pending final acceptance.        |
-| Done        | Fully implemented, tested, and accepted.         |
-| Obsolete    | No longer valid, superseded by another use case. |
+| Status            | Description                                                                 |
+| ----------------- | --------------------------------------------------------------------------- |
+| Draft             | Initial version, still being written.                                       |
+| Review            | Complete, awaiting stakeholder review.                                      |
+| Approved          | Reviewed and approved for implementation (specification only, no code yet). |
+| Implemented       | Implementation complete, ready for functional testing by the stakeholders.  |
+| Verified          | Tested and accepted by the stakeholders.                                    |
+| Revision Required | Specification or implementation needs rework after review or testing.       |
+| Obsolete          | No longer valid, superseded by another use case.                            |
+
+These values mirror the requirement statuses in `docs/requirements.md` (`Open → In Progress → Implemented → Verified`) so both documents can be kept in sync in the same change.
 
 ### Step Writing Guidelines
 

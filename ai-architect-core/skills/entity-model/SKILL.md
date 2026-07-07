@@ -21,6 +21,7 @@ The document contains an ER diagram and attribute tables.
 - Write prose descriptions like "Key attributes: name, email..."
 - Create a "Relationships" table
 - Skip the attribute tables
+- Translate entity or attribute names — they map to code and schema and are always English; descriptions and validation rules are written in the team's working language
 
 ## Document Structure
 
