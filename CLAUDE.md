@@ -77,6 +77,21 @@ the corresponding skill, passing through `$ARGUMENTS`. When adding a new skill, 
 - Business Rules: `BR-XXX`
 - Test Cases (manual): `TC-XXX` (3-digit, e.g., TC-001)
 
+## Language Conventions
+
+Skills generate two kinds of artifacts with different language rules. All skills must enforce this split:
+
+- **Documentation artifacts** (requirements catalog, use case specs, guidelines, test plans, `TESTING.md`) are
+  written in the **team's working language**.
+- **Code artifacts are always English**, regardless of the team's working language: file and directory names,
+  functions, variables, interfaces, types, components, hooks, CSS classes, i18n keys, and test file names.
+- **Domain terms** in code are translated via the project glossary in `docs/guidelines.md` — never invent ad-hoc
+  translations. If a term is missing from the glossary, it is added there in the same change.
+- **UI strings** are never hardcoded in code — they go through the project's i18n mechanism, with keys in all
+  supported locales.
+- **IDs and status values** (`FR-XXX`, `UC-XXX`, `Open`, `Implemented`, …) stay in English even inside
+  team-language documents so they remain searchable and consistent across projects.
+
 ## Commit Messages
 
 Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification:

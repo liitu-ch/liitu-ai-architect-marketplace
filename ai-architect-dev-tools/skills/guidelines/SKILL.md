@@ -3,21 +3,24 @@ name: guidelines
 description: >
   Creates a project-level implementation guidelines document at
   docs/guidelines.md by scanning the codebase for the UI component library,
-  styling approach, project structure, and naming conventions, validating the
-  libraries found in package.json against their official documentation via the
-  Context7 MCP server, then asking the user about rules that are not visible
-  in code. The resulting document is the binding reference for how UI
-  components and code must be implemented — existing components are reused
-  instead of building new ones. Use when the user asks to "create coding
-  guidelines", "document UI guidelines", "create implementation guidelines",
-  "document our component conventions", asks "how should UI components be
-  implemented", or complains that implementations ignore existing components
-  or add custom styling.
+  styling approach, project structure, naming conventions, i18n setup, and
+  domain terminology, validating the libraries found in package.json against
+  their official documentation via the Context7 MCP server, then asking the
+  user about rules that are not visible in code. The resulting document is
+  the binding reference for how UI components and code must be implemented —
+  existing components are reused instead of building new ones, code
+  identifiers are always English, and domain terms follow a binding glossary.
+  Use when the user asks to "create coding guidelines", "document UI
+  guidelines", "create implementation guidelines", "document our component
+  conventions", "document naming or language conventions", "create a domain
+  glossary", asks "how should UI components be implemented", or complains
+  that implementations ignore existing components, add custom styling, or mix
+  languages in identifiers and file names.
 ---
 
 # Implementation Guidelines Document
 
-Create a `docs/guidelines.md` that documents how code — especially UI — must be implemented in this project: which component library and existing project components to reuse, how styling is done, where new files belong, and which conventions apply.
+Create a `docs/guidelines.md` that documents how code — especially UI — must be implemented in this project: which component library and existing project components to reuse, how styling is done, where new files belong, which naming and language rules apply, and how domain terms map to English code terms (glossary).
 
 This document is a **binding rule set**, not a tutorial. Other skills (notably `implement-use-case`) read it and carry its rules into implementation plans, so implementations reuse existing components instead of inventing new ones or adding custom styling.
 
@@ -31,7 +34,9 @@ Write to `docs/guidelines.md`.
 - Skip the Context7 check silently — if the server is unavailable, note in the document that library rules are based on the codebase scan only
 - Leave placeholder text unfilled — every `{...}` must be replaced with real project context
 - Duplicate testing guidance — that belongs in `TESTING.md` (see the `ai-architect-testing` plugin)
-- Write in a language that doesn't match the team's working language
+- Write documentation in a language that doesn't match the team's working language
+- Soften the language rule for code — file names, code identifiers, CSS classes, i18n keys, and test file names are always English, even when the team's working language is not
+- Leave the glossary empty when the scan found domain-specific terms — every domain term used in code needs exactly one binding English translation
 
 ## Workflow
 
@@ -55,6 +60,8 @@ Gather evidence of the project's actual conventions:
 4. **Project structure & layers** — identify the folder layout and architectural layers (e.g., views, components, services, domain, api) and where new files of each kind belong
 5. **Naming conventions** — file naming (PascalCase/kebab-case), component naming, hook prefixes, test file suffixes
 6. **State & data access** — state management library, data-fetching pattern, where API calls live
+7. **Internationalization** — i18n library, where locale files live, the supported locales, and how UI strings are referenced (also note hardcoded strings and inline fallback texts as violations to rule out)
+8. **Domain terminology** — collect domain terms from code identifiers, documentation (`docs/requirements.md`, use case specs), and external system fields (e.g., SAP/OData field names) as input for the glossary; note existing translations and inconsistencies (the same term translated differently in different places, non-English identifiers)
 
 Record findings with file paths as evidence. Mark this todo done.
 
@@ -93,7 +100,7 @@ Mark this todo done.
 
 ### Step 5: Write the guidelines
 
-Create `docs/guidelines.md` using [templates/guidelines.md](templates/guidelines.md) as the starting point. Fill every placeholder with project-specific content from Steps 2–4, including the library-specific rules derived via Context7. Write in the team's working language.
+Create `docs/guidelines.md` using [templates/guidelines.md](templates/guidelines.md) as the starting point. Fill every placeholder with project-specific content from Steps 2–4, including the library-specific rules derived via Context7. Write in the team's working language; code identifiers in rules and examples stay English. Fill the Glossary with the domain terms collected in Step 2 — mark translations you are not sure about with `(to confirm)` so the team can review them.
 
 Mark this todo done.
 
@@ -107,6 +114,9 @@ Verify before finishing:
 - [ ] The component inventory lists real components with correct paths
 - [ ] The "reuse before build" rule states where new components belong when one is genuinely needed
 - [ ] Forbidden practices are listed concretely (no vague "write clean code" statements)
+- [ ] The Naming & Language section states that file names, code identifiers, CSS classes, i18n keys, and test files are always English
+- [ ] The glossary maps every domain term found in the scan to exactly one English code term; uncertain entries are marked `(to confirm)`
+- [ ] The i18n rule names the mechanism and all supported locales (or states explicitly that the project is single-language)
 - [ ] No placeholder text remains
 - [ ] Document was written to `docs/guidelines.md`
 - [ ] All TodoWrite tasks are marked done
