@@ -23,6 +23,8 @@ Create a structured implementation plan for the use case specified in $ARGUMENTS
 - Mark plan checkboxes as done during planning — they start unchecked
 - Proceed if `docs/use_cases/$ARGUMENTS.md` does not exist — stop and report the missing file
 - Propose tasks that introduce new UI components or custom styling when `docs/guidelines.md` mandates existing components or a styling approach — if a deviation seems necessary, record it under Open Questions & Risks instead
+- Resolve spec gaps silently — when the spec and requirements are silent on behavior the implementation must decide, follow the Spec Gap Protocol (assumption + pinning test + clarification issue)
+- Treat external system metadata defaults as proof of behavior (e.g., OData `sap:updatable="false"` is a default, not evidence that a field is read-only) — plan a verification task against a real test system before UI work that depends on such behavior
 
 ## Workflow
 
@@ -125,6 +127,12 @@ For each gap, capture:
 - Which requirement(s) or business rule(s) it relates to
 - Source(s): `Automated` / `User` / `Cross-reference`
 
+**Spec Gap Protocol** — when the use case spec and requirements are silent on behavior the implementation must decide (edge cases, aggregation rules, thresholds, wording), never pick a behavior silently. For each spec gap:
+
+1. Record the assumption under Open Questions & Risks, referencing the affected UC/FR/BR
+2. Add an implementation task that pins the assumed behavior with a unit test
+3. Add an implementation task that creates a clarification issue for the stakeholder — stating the question, the assumption taken in the meantime, and the UC/FR reference
+
 Mark this todo done.
 
 ### Step 7: Write the plan
@@ -209,7 +217,15 @@ Ordered checklist — work through these in sequence; earlier tasks often unbloc
 
 - [ ] 1. [First task — typically the data layer or foundational piece]
 - [ ] 2. [Second task]
-- [ ] N. Update use case status in `docs/use_cases/$ARGUMENTS.md` to `Implemented`
+- [ ] ... [Further feature tasks]
+
+Mandatory closing tasks — every plan ends with these. Drop one only when clearly not applicable to this project and note why under Open Questions & Risks:
+
+- [ ] N-4. **i18n completeness** — every new user-facing string goes through the i18n mechanism; keys exist in all supported locales; no inline fallback texts; no unused keys
+- [ ] N-3. **Mock & contract parity** — every new or changed backend endpoint is mirrored in the mock server and in the contract documentation (e.g., metadata) within this change
+- [ ] N-2. **Platform parity check** — verify the UI on every platform mode the project targets (e.g., iOS mode and Material/web mode, touch and mouse input, small screens)
+- [ ] N-1. **Wiring & error feedback check** — every exported hook value, store field, i18n key, and table introduced by this plan is consumed by something; no TODO/FIXME without a tracked issue; every user action shows visible error feedback on failure (no silently swallowed catch blocks)
+- [ ] N. **Status sync** — update the status of the affected FRs in `docs/requirements.md` and set the use case status in `docs/use_cases/$ARGUMENTS.md` to `Implemented` — statuses move only once the behavior is verified in the running app, and in the same change as the implementation
 
 > Check off each task as you complete it. Update **Status** above from `In Progress` to `Done` when all tasks are checked.
 
@@ -246,6 +262,8 @@ Verify before finishing:
 - [ ] Implementation Tasks are numbered and ordered (foundational work first)
 - [ ] Implementation Tasks comply with `docs/guidelines.md`: UI tasks name the existing components to use, and no task introduces new components or custom styling without an entry under Open Questions & Risks (or the guidelines file is absent and noted in the plan)
 - [ ] No task is vague — each describes a concrete deliverable
+- [ ] The five mandatory closing tasks are present (i18n completeness, mock & contract parity, platform parity, wiring & error feedback, status sync) — or an omission is justified under Open Questions & Risks
+- [ ] Every spec gap follows the Spec Gap Protocol: an assumption under Open Questions & Risks plus a pinning-test task and a clarification-issue task
 - [ ] Plan was written to `docs/implementation/$ARGUMENTS/plan.md`
 - [ ] All TodoWrite tasks are marked done
 
