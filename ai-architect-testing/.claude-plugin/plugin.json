@@ -1,7 +1,7 @@
 {
   "name": "ai-architect-testing",
   "description": "AI-powered testing plugin for Claude — document a project-level testing concept and create Playwright E2E tests, Vitest unit tests, and structured manual test plans through guided slash commands.",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "author": {
     "name": "Sandro Scalco",
     "email": "sandro.scalco@liitu.ch",
