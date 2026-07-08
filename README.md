@@ -9,6 +9,11 @@ AI Architect is a methodology plugin that keeps requirements at the center of yo
 structured workflow from vision to specification, ensuring consistency and traceability throughout your project — from
 requirements catalogs and entity models to use case diagrams and detailed specifications.
 
+All skills follow one language rule: documentation artifacts (requirements, use cases, guidelines, test plans) are
+written in your team's working language, while code artifacts — file names, identifiers, CSS classes, i18n keys,
+test files — are always English. Domain terms map to English code terms through a binding glossary in
+`docs/guidelines.md` (see `/ai-guidelines`).
+
 ## Architecture
 
 The marketplace contains three plugins:
@@ -122,11 +127,11 @@ guidelines and planning a use case to crafting a conventional commit — through
 
 #### Skills & Commands
 
-| Command                  | Skill                                        | Description                                                                                                                                                 |
-| ------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines.md` documenting UI component reuse, styling rules, and conventions, validated against official library docs via Context7 |
-| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                    |
-| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                         |
+| Command                  | Skill                                        | Description                                                                                                                                                                                      |
+| ------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines.md` documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7 |
+| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                         |
+| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                              |
 
 #### MCP Servers
 
