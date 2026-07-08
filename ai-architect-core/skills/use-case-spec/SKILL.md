@@ -22,6 +22,8 @@ Create or update use case specification documents for $ARGUMENTS in `docs/use_ca
 - Leave postconditions undefined
 - Mix multiple use cases in one document
 - Use technical implementation details in the flow steps
+- Write scenario and rule content in a language other than the team's working language — IDs (UC-XXX, BR-XXX) and status values stay in English
+- Leave observed UI behavior undocumented — behavior that goes beyond the current spec is added as an alternative flow, not left implicit
 
 ## Template
 

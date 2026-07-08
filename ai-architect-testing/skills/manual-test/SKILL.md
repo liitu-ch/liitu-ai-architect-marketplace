@@ -125,6 +125,23 @@ Test on all target devices and browsers from the test matrix.
 | 2    | Rotate to portrait   | Single-column layout              |           |       |
 ```
 
+### Native Configuration (mobile apps)
+
+When the tested change touches native layers — a new external domain, a new device feature, an updated plugin — include configuration checks. Each forgotten entry here surfaces only on a real device, typically after the release build.
+
+```markdown
+## TC-006: New backend domain reachable on device
+
+**Priority:** High
+**Preconditions:** Release/TestFlight build installed on a physical device.
+
+| Step | Action                                        | Expected Result                                | Pass/Fail | Notes |
+| ---- | --------------------------------------------- | ---------------------------------------------- | --------- | ----- |
+| 1    | Trigger a request to the new domain (iOS)     | Request succeeds (ATS exception in Info.plist) |           |       |
+| 2    | Trigger the network feature (Android)         | Works (permission in AndroidManifest.xml)      |           |       |
+| 3    | Install and launch on the oldest supported OS | App starts, feature works (SDK/OS constraints) |           |       |
+```
+
 ### Performance / UX
 
 Test that the app feels responsive and interactions are smooth.
@@ -144,7 +161,7 @@ Test that the app feels responsive and interactions are smooth.
 
 ## Test Environment Matrix
 
-Document which devices and browsers to test:
+Document which devices and browsers to test. Keep desktop browsers in the matrix even for mobile-first apps — event-handling bugs (e.g., a stepper counting twice per click) often reproduce only in a desktop browser, and input-type differences (touch vs. mouse) hide bugs from single-platform testing:
 
 ```markdown
 ## Test Matrix
