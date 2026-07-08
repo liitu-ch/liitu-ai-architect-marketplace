@@ -12,8 +12,8 @@ This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketpl
   creating Playwright E2E tests, Vitest unit tests (including architecture/layer-boundary checks), and manual
   test plans.
 - **`ai-architect-dev-tools`** — developer workflow tools with skills for creating conventional commits,
-  project-level implementation guidelines (UI component reuse, styling rules, conventions), and structured use
-  case implementation plans through guided interaction.
+  project-level implementation guidelines (UI component reuse, styling rules, conventions), structured use
+  case implementation plans, and code review against the project conventions through guided interaction.
 
 ## Repository Structure
 
