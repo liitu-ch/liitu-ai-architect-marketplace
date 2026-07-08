@@ -53,10 +53,11 @@ All skills follow these patterns:
 - **Frontmatter**: YAML between `---` markers with `name` and multiline `description` (using `>` syntax). The
   description includes trigger phrases ("Use when the user asks to...") so Claude knows when to auto-invoke.
 - **Workflow**: Skills use TodoWrite for task tracking and follow numbered step-by-step workflows.
-- **Output**: Each skill writes to a specific file in `docs/` (e.g., `docs/requirements.md`,
+- **Output**: Most skills write to a specific file in `docs/` (e.g., `docs/requirements.md`,
   `docs/entity_model.md`, `docs/use_cases.md`, `docs/use_cases/{name}.md`, `docs/guidelines.md`,
-  `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`). The `testing-concept` skill is the
-  exception and writes `TESTING.md` at the project root.
+  `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`). Exceptions: `testing-concept`
+  writes `TESTING.md` at the project root; `commit` and `code-review` produce no document (a git commit and a
+  findings report, respectively).
 - **Quality checks**: Skills include validation checklists at the end of their workflows.
 - **$ARGUMENTS**: Used for user-provided input (e.g., the `use-case-spec` skill receives the use case to
   document via `$ARGUMENTS`).
