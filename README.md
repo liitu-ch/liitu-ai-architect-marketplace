@@ -21,17 +21,18 @@ The marketplace contains three plugins:
 - **ai-architect-core** — Requirements engineering and system modeling (requirements, entity model, use cases).
   Works with any tech stack.
 - **ai-architect-testing** — Testing toolkit for React projects (project-level testing concept, Playwright E2E
-  tests, Vitest unit tests including architecture/layer-boundary checks, manual test plans).
+  tests, Vitest unit tests including architecture/layer-boundary checks, manual test plans, end-user guides as
+  Word documents with screenshots).
 - **ai-architect-dev-tools** — Developer workflow tools (conventional commits, project implementation guidelines,
   use case implementation plans, code review against project conventions).
 
 Skills follow a sequential software development workflow:
 
-|                            | Inception          | Elaboration                                  | Construction                             | Verification                                               |
-| -------------------------- | ------------------ | -------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
-| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram` | `/ai-use-case-spec`                      |                                                            |
-| **ai-architect-testing**   |                    | `/ai-testing-concept`                        |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test` |
-| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`             | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-commit`                          |
+|                            | Inception          | Elaboration                                  | Construction                             | Verification                                                                   |
+| -------------------------- | ------------------ | -------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
+| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram` | `/ai-use-case-spec`                      |                                                                                |
+| **ai-architect-testing**   |                    | `/ai-testing-concept`                        |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
+| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`             | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-commit`                                              |
 
 ## Installation
 
@@ -113,6 +114,7 @@ automated E2E tests, unit tests (including architecture/layer-boundary checks), 
 | `/ai-playwright-test` | `/ai-architect-testing:playwright-test` | Creates Playwright E2E tests for React views with accessibility-first locators and multi-device coverage  |
 | `/ai-vitest`          | `/ai-architect-testing:vitest`          | Creates Vitest unit tests for domain logic, mappers, components, and architecture/layer-boundary checks   |
 | `/ai-manual-test`     | `/ai-architect-testing:manual-test`     | Creates structured manual test plans with step-by-step test cases for device and browser testing          |
+| `/ai-user-guide`      | `/ai-architect-testing:user-guide`      | Creates end-user guides as Word documents from use case specs, with Playwright-captured screenshots       |
 
 #### MCP Servers
 
