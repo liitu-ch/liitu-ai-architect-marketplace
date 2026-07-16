@@ -27,13 +27,20 @@ person operating the app, not a developer or tester.
 Determine from $ARGUMENTS and the project; ask (AskUserQuestion) only what
 remains unclear:
 
-1. **Use case(s)** — one or more UC IDs. Specs usually live in
-   `docs/use_cases/UC-*.md` or similar.
-2. **Output mode** (only when multiple UCs): one document per use case
+1. **Document type** — a step-by-step guide per use case (default,
+   [templates/user-guide-template.md](templates/user-guide-template.md)) or a
+   full app manual organised by app area / screen
+   ([templates/app-manual-template.md](templates/app-manual-template.md)).
+   Choose the manual when the user asks for a handbook covering the whole app
+   rather than one task.
+2. **Use case(s)** — one or more UC IDs. Specs usually live in
+   `docs/use_cases/UC-*.md` or similar. A full app manual may also be driven
+   by the app's areas/screens instead of UC IDs.
+3. **Output mode** (only when multiple UCs): one document per use case
    (default) or a single combined manual with one chapter per use case.
-3. **Device profile** — default `iPad (gen 11) landscape`; respect what the
+4. **Device profile** — default `iPad (gen 11) landscape`; respect what the
    project's Playwright config already defines.
-4. **Language** — the language end users read. Default to the language of the
+5. **Language** — the language end users read. Default to the language of the
    project's documentation; never mix languages within one guide.
 
 ## Prerequisites
@@ -53,7 +60,7 @@ improvising around it:
 The **main success scenario** defines the guide's step sequence. Alternative
 flows become hint/warning boxes inside the related step (e.g. "sync failed"
 becomes a note in the sync step) — not separate chapters. Business rules
-translate into user-facing explanations; requirement IDs (FR-*, BR-*) stay
+translate into user-facing explanations; requirement IDs (FR-_, BR-_) stay
 out of the guide text, end users don't know them.
 
 ### 2. Create the screenshot spec
@@ -97,10 +104,22 @@ guide with a wrong screenshot is worse than no guide. Re-run after fixes.
 
 ### 4. Write the guide from the template
 
-Use [templates/user-guide-template.md](templates/user-guide-template.md) as
-the structure. It is a pandoc-flavoured Markdown file: YAML metadata block
-for the Word title page, one `# Step N` section per scenario step, images
-with captions and fixed width.
+**Template resolution:** if the project has its own template under
+`docs/user-guides/templates/` (created with `/ai-create-user-guide-template`),
+use that one — it encodes the project's structure decisions. Otherwise fall
+back to the built-in template matching the document type:
+
+- Step-by-step use-case guide →
+  [templates/user-guide-template.md](templates/user-guide-template.md): YAML
+  metadata block for the Word title page, one `# Step N` section per scenario
+  step, images with captions and fixed width.
+- Full app manual →
+  [templates/app-manual-template.md](templates/app-manual-template.md): one
+  chapter per app area (overview screenshot with numbered callouts + one
+  subsection per element), separate task-oriented workflow chapters, optional
+  special-mode / device / appendix chapters.
+
+Both are pandoc-flavoured Markdown files.
 
 - Translate all headings and boilerplate into the guide language.
 - Write for the end user: "Tippen Sie auf …" / "Tap …" — imperative, no
@@ -135,12 +154,12 @@ docx — it is the editable master.
 
 ## Output
 
-| Artifact | Location (default) |
-| --- | --- |
-| Guide (Word) | `docs/user-guides/UC-XXX_<Name>_Guide.docx` |
-| Guide (Markdown master) | `docs/user-guides/UC-XXX_<Name>_Guide.md` |
-| Screenshots | `docs/user-guides/uc-xxx/NN-slug.png` |
-| Screenshot spec + config | `scripts/user-guide/` |
+| Artifact                 | Location (default)                          |
+| ------------------------ | ------------------------------------------- |
+| Guide (Word)             | `docs/user-guides/UC-XXX_<Name>_Guide.docx` |
+| Guide (Markdown master)  | `docs/user-guides/UC-XXX_<Name>_Guide.md`   |
+| Screenshots              | `docs/user-guides/uc-xxx/NN-slug.png`       |
+| Screenshot spec + config | `scripts/user-guide/`                       |
 
 Follow the project's existing naming and directory conventions when they
 differ (e.g. a German project may use `docs/anleitungen/`).
@@ -151,7 +170,7 @@ differ (e.g. a German project may use `docs/anleitungen/`).
   fixtures; that is the whole point of building on the existing test suite
 - Let the screenshot spec run in the regular test suite or CI — separate
   config, separate directory
-- Write requirement IDs (FR-*, BR-*, NFR-*) or test jargon into the guide
+- Write requirement IDs (FR-_, BR-_, NFR-*) or test jargon into the guide
   text — end users don't know them
 - Ship a guide without opening every screenshot — verify highlights, data,
   and timing visually

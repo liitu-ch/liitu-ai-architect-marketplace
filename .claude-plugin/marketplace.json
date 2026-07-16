@@ -9,17 +9,17 @@
     {
       "name": "ai-architect-core",
       "source": "./ai-architect-core",
-      "description": "AI-powered requirements engineering and system modeling plugin for Claude — create requirements catalogs, entity models, use case diagrams, and use case specifications through guided slash commands."
+      "description": "AI-powered requirements engineering and system modeling plugin for Claude \u2014 create requirements catalogs, entity models, use case diagrams, and use case specifications through guided slash commands."
     },
     {
       "name": "ai-architect-testing",
       "source": "./ai-architect-testing",
-      "description": "AI-powered testing plugin for Claude — document a project-level testing concept, create Playwright E2E tests, Vitest unit tests, structured manual test plans, and generate end-user guides as Word documents with app screenshots through guided slash commands."
+      "description": "AI-powered testing plugin for Claude \u2014 document a project-level testing concept, create Playwright E2E tests, Vitest unit tests, structured manual test plans, and generate end-user guides as Word documents with app screenshots, based on interactively built project-specific templates, through guided slash commands."
     },
     {
       "name": "ai-architect-dev-tools",
       "source": "./ai-architect-dev-tools",
-      "description": "Developer workflow tools for Claude — create conventional commits, project implementation guidelines, and structured use case implementation plans through guided slash commands."
+      "description": "Developer workflow tools for Claude \u2014 create conventional commits, project implementation guidelines, structured use case implementation plans, and project-convention code reviews through guided slash commands."
     }
   ]
 }

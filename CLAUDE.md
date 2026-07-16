@@ -9,8 +9,9 @@ This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketpl
 - **`ai-architect-core`** — a stack-agnostic requirements engineering and system modeling toolkit with skills for
   creating requirements catalogs, entity models, use case diagrams, and use case specifications.
 - **`ai-architect-testing`** — a testing toolkit with skills for documenting a project-level testing concept,
-  creating Playwright E2E tests, Vitest unit tests (including architecture/layer-boundary checks), and manual
-  test plans.
+  creating Playwright E2E tests, Vitest unit tests (including architecture/layer-boundary checks), manual
+  test plans, end-user guides as Word documents with Playwright-captured screenshots, and an interactive
+  builder for project-specific user-guide/app-manual templates.
 - **`ai-architect-dev-tools`** — developer workflow tools with skills for creating conventional commits,
   project-level implementation guidelines (UI component reuse, styling rules, conventions), structured use
   case implementation plans, and code review against the project conventions through guided interaction.
@@ -43,6 +44,8 @@ Skills live in `<plugin>/skills/<skill-name>/SKILL.md`. Some skills have support
 - `ai-architect-testing/skills/playwright-test/templates/example-view.spec.ts` — Playwright E2E test template
 - `ai-architect-testing/skills/vitest/templates/` — Vitest unit test templates (domain logic, components, mappers)
 - `ai-architect-testing/skills/manual-test/templates/manual-test-plan.md` — manual test plan template
+- `ai-architect-testing/skills/user-guide/templates/` — end-user guide templates (step-by-step use-case guide,
+  app manual organised by app area, screenshot capture spec, Playwright config)
 - `ai-architect-dev-tools/skills/guidelines/templates/guidelines.md` — template for the project implementation
   guidelines (`docs/guidelines.md`), consumed by the `implement-use-case` skill
 
@@ -53,10 +56,13 @@ All skills follow these patterns:
 - **Frontmatter**: YAML between `---` markers with `name` and multiline `description` (using `>` syntax). The
   description includes trigger phrases ("Use when the user asks to...") so Claude knows when to auto-invoke.
 - **Workflow**: Skills use TodoWrite for task tracking and follow numbered step-by-step workflows.
-- **Output**: Each skill writes to a specific file in `docs/` (e.g., `docs/requirements.md`,
+- **Output**: Most skills write to a specific file in `docs/` (e.g., `docs/requirements.md`,
   `docs/entity_model.md`, `docs/use_cases.md`, `docs/use_cases/{name}.md`, `docs/guidelines.md`,
-  `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`). The `testing-concept` skill is the
-  exception and writes `TESTING.md` at the project root.
+  `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`,
+  `docs/user-guides/UC-XXX_{name}_Guide.md` plus the converted `.docx`,
+  `docs/user-guides/templates/{user-guide|app-manual}-template.md`). Exceptions: `testing-concept`
+  writes `TESTING.md` at the project root; `commit` and `code-review` produce no document (a git commit and a
+  findings report, respectively).
 - **Quality checks**: Skills include validation checklists at the end of their workflows.
 - **$ARGUMENTS**: Used for user-provided input (e.g., the `use-case-spec` skill receives the use case to
   document via `$ARGUMENTS`).

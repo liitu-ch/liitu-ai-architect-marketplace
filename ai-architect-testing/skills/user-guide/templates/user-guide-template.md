@@ -1,7 +1,16 @@
+---
+title: "{Product name} — User Guide"
+subtitle: "{Use case title} ({UC-ID}) · {Device, e.g. iPad landscape}"
+date: "Version: {DD.MM.YYYY}"
+lang: "{de-CH}"
+---
+
 <!--
   Standard user-guide template (pandoc Markdown → Word).
 
-  Placeholders use {curly braces} — replace all of them.
+  Placeholders use {curly braces} — replace all of them. In the metadata
+  block above, replace the placeholders but keep the quotes; pandoc reads
+  `lang` as a plain string (de-CH, fr-CH, it-CH, en-US, …).
   Translate every heading and boilerplate sentence into the guide language
   (the language end users read). Keep the structure.
 
@@ -10,12 +19,6 @@
   Optional corporate styling once a Word template exists:
     --reference-doc=path/to/corporate-template.docx
 -->
----
-title: "{Product name} — User Guide"
-subtitle: "{Use case title} ({UC-ID}) · {Device, e.g. iPad landscape}"
-date: "Version: {DD.MM.YYYY}"
-lang: {de-CH}
----
 
 # About this guide
 
@@ -27,6 +30,7 @@ outline marks the area each step refers to.
 
 <!-- From the use case's preconditions, phrased for end users.
      Reference other guides instead of UC IDs where possible. -->
+
 - {Prerequisite 1, e.g. "You are signed in to the app (see guide «Signing in»).}
 - {Prerequisite 2}
 
