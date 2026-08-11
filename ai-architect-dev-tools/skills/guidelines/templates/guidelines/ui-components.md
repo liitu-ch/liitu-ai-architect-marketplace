@@ -16,3 +16,12 @@ New UI is composed from existing components. Building a new component is only al
 | Component | Path  | Purpose / When to use |
 | --------- | ----- | --------------------- |
 | {Name}    | `{…}` | {…}                   |
+
+## Standard UI Patterns
+
+Recurring UI constructs follow **one** documented standard pattern — new instances copy the pattern instead of being restyled per view. Duplicated pattern CSS across components is extracted into the shared pattern.
+
+| Pattern              | Standard                                                                                 | Reference Implementation |
+| -------------------- | ---------------------------------------------------------------------------------------- | ------------------------ |
+| {e.g., Modal/Dialog} | {e.g., shared modal class, close button position, sizing per platform mode (iOS vs. MD)} | `{path}`                 |
+| {e.g., Page footer}  | {e.g., button order and placement}                                                       | `{path}`                 |

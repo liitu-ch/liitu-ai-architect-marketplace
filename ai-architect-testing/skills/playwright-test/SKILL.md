@@ -72,6 +72,8 @@ Run a specific device with `npx playwright test --project="Pixel 7"`.
 
 Common device names: `"Desktop Chrome"`, `"Desktop Firefox"`, `"Desktop Safari"`, `"Pixel 7"`, `"Pixel 5"`, `"iPhone 15"`, `"iPad (gen 11)"`, `"Galaxy S9+"`.
 
+Keep at least one desktop and one mobile/touch project in the matrix — event-handling bugs (e.g., handlers firing twice per tap) often reproduce on only one input type. For frameworks that render differently per platform mode (e.g., Ionic `ios`/`md`), run the suite in both modes: sizing and styling bugs are frequently mode-specific.
+
 ## DO NOT
 
 - Use `page.locator()` with CSS/XPath selectors — use accessibility locators (`getByRole`, `getByLabel`, `getByText`, `getByPlaceholder`)
@@ -80,6 +82,7 @@ Common device names: `"Desktop Chrome"`, `"Desktop Firefox"`, `"Desktop Safari"`
 - Use `getAttribute()` or `isVisible()` in manual if-checks — use `expect()` matchers that auto-retry
 - Import `test` from `@playwright/test` and also from another test framework — use only Playwright's runner
 - Mock API responses unless explicitly asked — prefer real backend interactions for E2E tests
+- Locate elements by translated UI text in multilingual projects — hardcoded display strings break when the app runs in another locale or the wording changes (see Multilingual Projects below)
 
 ## Test Data
 
@@ -128,11 +131,20 @@ page.getByText("Welcome back");
 page.getByText("No results found");
 ```
 
-### By Test ID (last resort)
+### By Test ID (last resort in single-language projects)
 
 ```ts
 page.getByTestId("customer-grid");
 ```
+
+### Multilingual Projects
+
+Text-based locators (`getByText`, `getByRole` with `name:`) are tied to one locale — they break when the app runs in another language or the wording changes. In projects with more than one locale:
+
+- Prefer `getByTestId` for elements whose accessible name is translated — here it is **not** a last resort but the stable choice
+- If you use `getByRole` with `name:`, resolve the name from the same i18n source the app uses — never hardcode a translated display string
+- Keep fixtures and test data language-neutral
+- Pin the app's locale explicitly in the test setup, and run the suite in at least one non-default locale
 
 ### Scoped Lookups (within containers)
 

@@ -53,6 +53,7 @@ import "@testing-library/jest-dom/vitest";
 - Use `enzyme` or `shallow()` — use `@testing-library/react` with full rendering
 - Mock everything — only mock external boundaries (API calls, timers), not internal modules
 - Write snapshot tests as the primary assertion — prefer explicit assertions on behavior and output
+- Test mappers with a single happy-path example — cover the format edge cases (leading zeros, prefixes, empty fields, special characters); naive mappings against external systems are a recurring source of production bugs
 
 ## Templates
 
@@ -85,7 +86,7 @@ describe("calculateDiscount", () => {
 
 ### Data Mappers
 
-Test transformations between external formats (SAP, API responses) and internal models.
+Test transformations between external formats (SAP, API responses) and internal models. **Mapper tests are mandatory for every mapper** — naive mappings (e.g., an `endsWith` shortcut instead of the real number-derivation rule) repeatedly reach production.
 
 ```ts
 import { describe, it, expect } from "vitest";
@@ -101,6 +102,13 @@ describe("mapApiResponse", () => {
   });
 });
 ```
+
+Every mapper test suite must cover:
+
+- The documented mapping rule itself — assert the full rule (padding, prefixes, derivations), not a lookalike shortcut
+- Format edge cases: leading zeros, prefixes, empty and missing fields
+- Unicode/special characters wherever text is compared or searched — normalize (`String.prototype.normalize`) and test accented input (é, ö, ç)
+- One regression test per fixed mapping bug, named after the business rule it pins (e.g., `BR-078`)
 
 ### React Components
 

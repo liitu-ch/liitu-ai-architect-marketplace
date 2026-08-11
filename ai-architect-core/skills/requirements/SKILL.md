@@ -24,6 +24,7 @@ tables.
 - Skip the user story format for functional requirements
 - Use duplicate IDs across requirement types
 - Leave the Status column empty
+- Write requirement titles, user stories, and descriptions in a language other than the team's working language — IDs, status values, priorities, and categories stay in English
 
 ## Requirement Types
 

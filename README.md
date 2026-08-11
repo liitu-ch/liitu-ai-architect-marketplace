@@ -9,6 +9,11 @@ AI Architect is a methodology plugin that keeps requirements at the center of yo
 structured workflow from vision to specification, ensuring consistency and traceability throughout your project — from
 requirements catalogs and entity models to use case diagrams and detailed specifications.
 
+All skills follow one language rule: documentation artifacts (requirements, use cases, guidelines, test plans) are
+written in your team's working language, while code artifacts — file names, identifiers, CSS classes, i18n keys,
+test files — are always English. Domain terms map to English code terms through a binding glossary in
+`docs/guidelines/` (see `/ai-guidelines`).
+
 ## Architecture
 
 The marketplace contains three plugins:
@@ -16,17 +21,18 @@ The marketplace contains three plugins:
 - **ai-architect-core** — Requirements engineering and system modeling (requirements, entity model, use cases).
   Works with any tech stack.
 - **ai-architect-testing** — Testing toolkit for React projects (project-level testing concept, Playwright E2E
-  tests, Vitest unit tests including architecture/layer-boundary checks, manual test plans).
+  tests, Vitest unit tests including architecture/layer-boundary checks, manual test plans, end-user guides as
+  Word documents with screenshots, and an interactive builder for project-specific guide templates).
 - **ai-architect-dev-tools** — Developer workflow tools (conventional commits, project implementation guidelines,
-  use case implementation plans).
+  use case implementation plans, code review against project conventions).
 
 Skills follow a sequential software development workflow:
 
-|                            | Inception          | Elaboration                                  | Construction                             | Verification                                               |
-| -------------------------- | ------------------ | -------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
-| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram` | `/ai-use-case-spec`                      |                                                            |
-| **ai-architect-testing**   |                    | `/ai-testing-concept`                        |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test` |
-| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`             | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-commit`                                               |
+|                            | Inception          | Elaboration                                               | Construction                             | Verification                                                                   |
+| -------------------------- | ------------------ | --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
+| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram`              | `/ai-use-case-spec`                      |                                                                                |
+| **ai-architect-testing**   |                    | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
+| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-commit`                                              |
 
 ## Installation
 
@@ -102,12 +108,14 @@ automated E2E tests, unit tests (including architecture/layer-boundary checks), 
 
 #### Skills & Commands
 
-| Command               | Skill                                   | Description                                                                                               |
-| --------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `/ai-testing-concept` | `/ai-architect-testing:testing-concept` | Generates a project-level `TESTING.md` documenting which test levels are used, why, and the project setup |
-| `/ai-playwright-test` | `/ai-architect-testing:playwright-test` | Creates Playwright E2E tests for React views with accessibility-first locators and multi-device coverage  |
-| `/ai-vitest`          | `/ai-architect-testing:vitest`          | Creates Vitest unit tests for domain logic, mappers, components, and architecture/layer-boundary checks   |
-| `/ai-manual-test`     | `/ai-architect-testing:manual-test`     | Creates structured manual test plans with step-by-step test cases for device and browser testing          |
+| Command                          | Skill                                              | Description                                                                                               |
+| -------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `/ai-testing-concept`            | `/ai-architect-testing:testing-concept`            | Generates a project-level `TESTING.md` documenting which test levels are used, why, and the project setup |
+| `/ai-playwright-test`            | `/ai-architect-testing:playwright-test`            | Creates Playwright E2E tests for React views with accessibility-first locators and multi-device coverage  |
+| `/ai-vitest`                     | `/ai-architect-testing:vitest`                     | Creates Vitest unit tests for domain logic, mappers, components, and architecture/layer-boundary checks   |
+| `/ai-manual-test`                | `/ai-architect-testing:manual-test`                | Creates structured manual test plans with step-by-step test cases for device and browser testing          |
+| `/ai-user-guide`                 | `/ai-architect-testing:user-guide`                 | Creates end-user guides as Word documents from use case specs, with Playwright-captured screenshots       |
+| `/ai-create-user-guide-template` | `/ai-architect-testing:create-user-guide-template` | Interactively builds a project-specific user-guide/app-manual template that `/ai-user-guide` then uses    |
 
 #### MCP Servers
 
@@ -118,15 +126,17 @@ automated E2E tests, unit tests (including architecture/layer-boundary checks), 
 ### ai-architect-dev-tools
 
 Developer workflow tools that streamline day-to-day implementation work — from documenting implementation
-guidelines and planning a use case to crafting a conventional commit — through guided interaction.
+guidelines and planning a use case to reviewing changes against those guidelines and crafting a conventional
+commit — through guided interaction.
 
 #### Skills & Commands
 
-| Command                  | Skill                                        | Description                                                                                                                                                         |
-| ------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, and conventions, validated against official library docs via Context7 |
-| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                            |
-| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                 |
+| Command                  | Skill                                        | Description                                                                                                                                                                                              |
+| ------------------------ | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7 |
+| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                 |
+| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                      |
+| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                           |
 
 #### MCP Servers
 

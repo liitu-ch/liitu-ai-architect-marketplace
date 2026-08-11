@@ -20,6 +20,8 @@ Create or update the Mermaid use case diagram at `docs/use_cases.md` based on `d
 - Use PlantUML syntax
 - Include implementation details in use case names
 - Add actors that are not connected to any use case
+- Write use case and actor labels in a language other than the team's working language — IDs (UC-XXX) and node IDs stay as defined below
+- Reuse a UC ID that already exists in `docs/use_cases.md` or `docs/use_cases/` — IDs are unique across the project
 
 ## Template
 
