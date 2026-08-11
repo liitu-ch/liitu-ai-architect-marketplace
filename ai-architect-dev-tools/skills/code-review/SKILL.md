@@ -15,14 +15,14 @@ description: >
 
 Review the changes specified in $ARGUMENTS (a PR number, a branch name, or — if empty — the current working tree and branch diff against the default branch) against the project's binding conventions and known defect classes. The output is a structured findings report, not code changes.
 
-This skill complements a generic code review: a generic review finds general correctness issues, while this skill enforces the **project-specific rule set** (`docs/guidelines.md`, requirements status conventions, glossary) that a generic review cannot know.
+This skill complements a generic code review: a generic review finds general correctness issues, while this skill enforces the **project-specific rule set** (`docs/guidelines/`, requirements status conventions, glossary) that a generic review cannot know.
 
 ## DO NOT
 
 - Change code during the review — report findings; fixes happen after the review, on request
-- Report taste-based style opinions that are not backed by `docs/guidelines.md`, `CLAUDE.md`, or an official library recommendation
+- Report taste-based style opinions that are not backed by `docs/guidelines/`, `CLAUDE.md`, or an official library recommendation
 - Report a finding without reading the surrounding code — diff-only reading produces false positives
-- Skip loading `docs/guidelines.md` silently — if it is missing, say so and recommend creating it with `/ai-guidelines`
+- Skip loading `docs/guidelines/` silently — if it is missing, say so and recommend creating it with `/ai-guidelines`
 - Drown real findings in nits — order by severity and mark nits as such
 
 ## Workflow
@@ -51,7 +51,7 @@ Mark this todo done.
 
 Read these documents; note as missing where absent:
 
-1. `docs/guidelines.md` — binding rules: component inventory, standard UI patterns, styling rules, naming & language rules, glossary
+1. `docs/guidelines/` — binding rules: component inventory, standard UI patterns, styling rules, naming & language rules, glossary. Read `docs/guidelines/README.md` and the chapter files it links
 2. `docs/requirements.md` and the `docs/use_cases/*.md` files touched by the change — to check status sync and spec conformance
 3. `CLAUDE.md` / `TESTING.md` — project-specific conventions and test expectations
 
@@ -121,7 +121,7 @@ Group findings by severity:
 - **Should fix** — likely defect or convention violation with real cost
 - **Nit** — minor; fix when touching the file anyway
 
-For each finding give: `file:line`, the issue, the violated rule (with its source: guidelines section, CLAUDE.md, or defect class), and the concrete fix. End with a one-paragraph verdict (ready to merge / needs work) and the list of dimensions checked, so gaps are visible.
+For each finding give: `file:line`, the issue, the violated rule (with its source: guidelines chapter, CLAUDE.md, or defect class), and the concrete fix. End with a one-paragraph verdict (ready to merge / needs work) and the list of dimensions checked, so gaps are visible.
 
 Offer two follow-ups, but do not perform them unasked:
 

@@ -46,8 +46,8 @@ Skills live in `<plugin>/skills/<skill-name>/SKILL.md`. Some skills have support
 - `ai-architect-testing/skills/manual-test/templates/manual-test-plan.md` — manual test plan template
 - `ai-architect-testing/skills/user-guide/templates/` — end-user guide templates (step-by-step use-case guide,
   app manual organised by app area, screenshot capture spec, Playwright config)
-- `ai-architect-dev-tools/skills/guidelines/templates/guidelines.md` — template for the project implementation
-  guidelines (`docs/guidelines.md`), consumed by the `implement-use-case` skill
+- `ai-architect-dev-tools/skills/guidelines/templates/guidelines/` — per-chapter templates for the project
+  implementation guidelines (`docs/guidelines/`), consumed by the `implement-use-case` skill
 
 ## Skill Authoring Conventions
 
@@ -57,7 +57,7 @@ All skills follow these patterns:
   description includes trigger phrases ("Use when the user asks to...") so Claude knows when to auto-invoke.
 - **Workflow**: Skills use TodoWrite for task tracking and follow numbered step-by-step workflows.
 - **Output**: Most skills write to a specific file in `docs/` (e.g., `docs/requirements.md`,
-  `docs/entity_model.md`, `docs/use_cases.md`, `docs/use_cases/{name}.md`, `docs/guidelines.md`,
+  `docs/entity_model.md`, `docs/use_cases.md`, `docs/use_cases/{name}.md`, `docs/guidelines/`,
   `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`,
   `docs/user-guides/UC-XXX_{name}_Guide.md` plus the converted `.docx`,
   `docs/user-guides/templates/{user-guide|app-manual}-template.md`). Exceptions: `testing-concept`
@@ -91,7 +91,7 @@ Skills generate two kinds of artifacts with different language rules. All skills
   written in the **team's working language**.
 - **Code artifacts are always English**, regardless of the team's working language: file and directory names,
   functions, variables, interfaces, types, components, hooks, CSS classes, i18n keys, and test file names.
-- **Domain terms** in code are translated via the project glossary in `docs/guidelines.md` — never invent ad-hoc
+- **Domain terms** in code are translated via the project glossary in `docs/guidelines/` — never invent ad-hoc
   translations. If a term is missing from the glossary, it is added there in the same change.
 - **UI strings** are never hardcoded in code — they go through the project's i18n mechanism, with keys in all
   supported locales.

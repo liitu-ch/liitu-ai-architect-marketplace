@@ -12,7 +12,7 @@ requirements catalogs and entity models to use case diagrams and detailed specif
 All skills follow one language rule: documentation artifacts (requirements, use cases, guidelines, test plans) are
 written in your team's working language, while code artifacts — file names, identifiers, CSS classes, i18n keys,
 test files — are always English. Domain terms map to English code terms through a binding glossary in
-`docs/guidelines.md` (see `/ai-guidelines`).
+`docs/guidelines/` (see `/ai-guidelines`).
 
 ## Architecture
 
@@ -131,12 +131,12 @@ commit — through guided interaction.
 
 #### Skills & Commands
 
-| Command                  | Skill                                        | Description                                                                                                                                                                                      |
-| ------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines.md` documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7 |
-| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                         |
-| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                              |
-| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                   |
+| Command                  | Skill                                        | Description                                                                                                                                                                                              |
+| ------------------------ | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7 |
+| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                 |
+| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                      |
+| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                           |
 
 #### MCP Servers
 
