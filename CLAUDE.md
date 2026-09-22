@@ -68,6 +68,10 @@ All skills follow these patterns:
   writes `TESTING.md` at the project root; `commit`, `code-review`, and `issue` produce no document (a git commit,
   a findings report, and a GitHub issue created via `gh`, respectively).
 - **Quality checks**: Skills include validation checklists at the end of their workflows.
+- **Pipeline position**: Every skill reads the artifacts earlier skills produced and writes one artifact of its
+  own (see the Development Workflow section in `README.md`). The `issue` skill closes the loop: it reads the
+  chain backwards from a finding to the governing UC/FR/BR and reports which artifact (spec, code, test, review
+  rule) has to change first. When adding a skill, place it in that chain and update the README diagrams.
 - **$ARGUMENTS**: Used for user-provided input (e.g., the `use-case-spec` skill receives the use case to
   document via `$ARGUMENTS`).
 
