@@ -1,7 +1,7 @@
 {
   "name": "ai-architect-dev-tools",
-  "description": "Developer workflow tools for Claude — create conventional commits, project implementation guidelines, structured use case implementation plans, project-convention code reviews, and GitHub issues with root cause analysis through guided slash commands.",
-  "version": "2.1.0",
+  "description": "Developer workflow tools for Claude — create conventional commits, project implementation guidelines, structured use case implementation plans, project-convention code reviews, GitHub issues with root cause analysis, and end-to-end issue fixes (spec, tests, seed data, code, review) through guided slash commands.",
+  "version": "2.2.0",
   "author": {
     "name": "Sandro Scalco",
     "email": "sandro.scalco@liitu.ch",

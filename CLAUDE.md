@@ -14,8 +14,10 @@ This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketpl
   builder for project-specific user-guide/app-manual templates.
 - **`ai-architect-dev-tools`** — developer workflow tools with skills for creating conventional commits,
   project-level implementation guidelines (UI component reuse, styling rules, conventions), structured use
-  case implementation plans, code review against the project conventions, and capturing GitHub issues with a
-  root cause analysis (spec gaps, code defects, test and review gaps) through guided interaction.
+  case implementation plans, code review against the project conventions, capturing GitHub issues with a
+  root cause analysis (spec gaps, code defects, test and review gaps), and resolving issues end to end by
+  orchestrating the other skills (spec correction, regression test, seed data, fix, review, commit) through
+  guided interaction.
 
 ## Repository Structure
 
@@ -66,12 +68,16 @@ All skills follow these patterns:
   `docs/user-guides/UC-XXX_{name}_Guide.md` plus the converted `.docx`,
   `docs/user-guides/templates/{user-guide|app-manual}-template.md`). Exceptions: `testing-concept`
   writes `TESTING.md` at the project root; `commit`, `code-review`, and `issue` produce no document (a git commit,
-  a findings report, and a GitHub issue created via `gh`, respectively).
+  a findings report, and a GitHub issue created via `gh`, respectively); `fix-issue` extends the existing
+  `docs/implementation/{uc}/plan.md` with an issue section and produces a reviewed branch plus a PR.
 - **Quality checks**: Skills include validation checklists at the end of their workflows.
 - **Pipeline position**: Every skill reads the artifacts earlier skills produced and writes one artifact of its
   own (see the Development Workflow section in `README.md`). The `issue` skill closes the loop: it reads the
   chain backwards from a finding to the governing UC/FR/BR and reports which artifact (spec, code, test, review
-  rule) has to change first. When adding a skill, place it in that chain and update the README diagrams.
+  rule) has to change first. The `fix-issue` skill walks the chain forward again for one issue and is the only
+  skill that invokes other skills (`issue`, `use-case-spec`, `requirements`, `entity-model`, `guidelines`,
+  `implement-use-case`, `vitest`, `playwright-test`, `manual-test`, `code-review`, `commit`) instead of
+  reimplementing their steps. When adding a skill, place it in that chain and update the README diagrams.
 - **$ARGUMENTS**: Used for user-provided input (e.g., the `use-case-spec` skill receives the use case to
   document via `$ARGUMENTS`).
 

@@ -24,15 +24,16 @@ The marketplace contains three plugins:
   tests, Vitest unit tests including architecture/layer-boundary checks, manual test plans, end-user guides as
   Word documents with screenshots, and an interactive builder for project-specific guide templates).
 - **ai-architect-dev-tools** — Developer workflow tools (conventional commits, project implementation guidelines,
-  use case implementation plans, code review against project conventions, GitHub issues with root cause analysis).
+  use case implementation plans, code review against project conventions, GitHub issues with root cause analysis,
+  end-to-end issue fixes).
 
 Skills follow a sequential software development workflow:
 
-|                            | Inception          | Elaboration                                               | Construction                             | Verification                                                                   |
-| -------------------------- | ------------------ | --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
-| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram`              | `/ai-use-case-spec`                      |                                                                                |
-| **ai-architect-testing**   |                    | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
-| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-issue`<br>`/ai-commit`                               |
+|                            | Inception          | Elaboration                                               | Construction                                                | Verification                                                                   |
+| -------------------------- | ------------------ | --------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram`              | `/ai-use-case-spec`                                         |                                                                                |
+| **ai-architect-testing**   |                    | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                                             | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
+| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-fix-issue`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-issue`<br>`/ai-commit`                               |
 
 Each command in the table is a link in one chain — see [Development Workflow](#development-workflow) for how the
 skills hand their results to each other.
@@ -52,7 +53,8 @@ the use case overview, and the binding conventions for code and tests. After tha
 at a time**, repeating the same construction and verification loop until every use case is implemented.
 `/ai-commit` wraps up each step in every phase with a conventional commit. Findings that surface later — from
 field tests, reviews, or stakeholders — enter the loop again through `/ai-issue`, which traces each finding back
-to the spec, the code, the tests, and the review before it becomes a Bug or a Change Request.
+to the spec, the code, the tests, and the review before it becomes a Bug or a Change Request. `/ai-fix-issue`
+then resolves it along the same chain: spec correction first, regression test and seed data next, then the code.
 
 ```mermaid
 flowchart LR
@@ -65,7 +67,7 @@ flowchart LR
 
     subgraph loop["Per use case · repeated until every UC-XXX is Implemented"]
         direction LR
-        P3["③ Construction<br/><br/>/ai-use-case-spec UC-XXX<br/>/ai-implement-use-case UC-XXX"]
+        P3["③ Construction<br/><br/>/ai-use-case-spec UC-XXX<br/>/ai-implement-use-case UC-XXX<br/>/ai-fix-issue #n"]
         P4["④ Verification<br/><br/>/ai-vitest<br/>/ai-playwright-test<br/>/ai-code-review<br/>/ai-manual-test<br/>/ai-user-guide<br/>/ai-issue"]
         P3 --> P4
         P4 -. "next use case" .-> P3
@@ -94,7 +96,9 @@ on the diff, the test skills follow `TESTING.md`, and `/ai-user-guide` fills the
 `/ai-issue` is the only skill that reads the whole chain backwards: given a field-test finding or a review finding,
 it locates the governing use case and requirements, asks which test data reproduces the problem, checks whether
 the spec is silent or contradictory, and explains why the tests and the review did not catch it — the resulting
-GitHub issue then points back to the artifact that has to change first.
+GitHub issue then points back to the artifact that has to change first. `/ai-fix-issue` walks that path forward
+again: it corrects the spec through the core skills, extends the implementation plan, writes the regression test
+and seed data through the testing skills, fixes the code, and hands the branch to `/ai-code-review` and `/ai-commit`.
 
 ```mermaid
 flowchart TB
@@ -135,8 +139,8 @@ flowchart TB
     ucs -- "/ai-user-guide" --> guide
     findings -- "/ai-issue" --> issue
     field -- "/ai-issue" --> issue
-    issue -. "Change Request → /ai-use-case-spec" .-> ucs
-    issue -. "Bug → /ai-implement-use-case" .-> plan
+    issue -. "/ai-fix-issue · Change Request" .-> ucs
+    issue -. "/ai-fix-issue · Bug" .-> plan
 
     classDef artifact fill:#f3f4f6,stroke:#6b7280,color:#1f2328
     classDef store fill:#e0f2fe,stroke:#0369a1,color:#1f2328
@@ -156,7 +160,8 @@ A use case is rarely done for good. When the field test or a later review turns 
 it with a root cause analysis instead of a bare symptom: it decides whether the spec was wrong (Change Request —
 the cycle restarts at `/ai-use-case-spec`) or the code deviates from it (Bug — the cycle restarts at the
 implementation), and records why the existing tests and the review missed it, so the missing test or review rule
-is added with the fix.
+is added with the fix. `/ai-fix-issue` then runs the loop for that issue: spec correction, plan section, regression
+test that fails first, seed data where reproduction needs it, the fix itself, status sync, review, and commit.
 
 ```mermaid
 flowchart TD
@@ -176,8 +181,10 @@ flowchart TD
     done([Use case done]) -.-> pick
     done -. "field test / review finding" .-> issue
     issue["/ai-issue<br/>→ GitHub issue with root cause<br/>spec · code · tests · review"]
-    issue -- "Change Request" --> spec
-    issue -- "Bug" --> impl
+    issue --> fix
+    fix["/ai-fix-issue #n<br/>spec fix · plan · regression test · seed · fix · review · commit"]
+    fix -- "Change Request" --> spec
+    fix -- "Bug" --> impl
 
     classDef core fill:#dbeafe,stroke:#1d4ed8,color:#1f2328
     classDef testing fill:#dcfce7,stroke:#15803d,color:#1f2328
@@ -185,7 +192,7 @@ flowchart TD
     classDef step fill:#f3f4f6,stroke:#6b7280,color:#1f2328
     class spec core
     class unit,e2e,manual,guide testing
-    class plan,review,commit,issue devtools
+    class plan,review,commit,issue,fix devtools
     class pick,impl,sync,done step
 ```
 
@@ -285,17 +292,18 @@ automated E2E tests, unit tests (including architecture/layer-boundary checks), 
 
 Developer workflow tools that streamline day-to-day implementation work — from documenting implementation
 guidelines and planning a use case to reviewing changes against those guidelines, capturing issues with a real
-root cause analysis, and crafting a conventional commit — through guided interaction.
+root cause analysis, resolving them end to end, and crafting a conventional commit — through guided interaction.
 
 #### Skills & Commands
 
-| Command                  | Skill                                        | Description                                                                                                                                                                                                                         |
-| ------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7                            |
-| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                                            |
-| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                                                 |
-| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                                                      |
-| `/ai-issue`              | `/ai-architect-dev-tools:issue`              | Captures a GitHub issue with root cause analysis — locates the governing UC/FR/BR, checks the spec for gaps and contradictions, explains why tests and code review missed it, asks for test data, classifies Bug vs. Change Request |
+| Command                  | Skill                                        | Description                                                                                                                                                                                                                                                           |
+| ------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7                                                              |
+| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                                                                              |
+| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                                                                                   |
+| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                                                                                        |
+| `/ai-issue`              | `/ai-architect-dev-tools:issue`              | Captures a GitHub issue with root cause analysis — locates the governing UC/FR/BR, checks the spec for gaps and contradictions, explains why tests and code review missed it, asks for test data, classifies Bug vs. Change Request                                   |
+| `/ai-fix-issue`          | `/ai-architect-dev-tools:fix-issue`          | Resolves an issue end to end by orchestrating the other skills — root cause via `issue`, spec correction (UC/FR/BR/entity model), plan via `implement-use-case`, regression test first plus seed data, fix under the guidelines, status sync, `code-review`, `commit` |
 
 #### MCP Servers
 
