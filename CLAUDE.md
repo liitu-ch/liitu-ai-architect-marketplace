@@ -138,3 +138,12 @@ claude --plugin-dir ./ai-architect-dev-tools
 ```
 
 After changes, run `/reload-plugins` inside Claude Code to pick up updates without restarting.
+
+## Releasing
+
+Releases are created with `release-it` (`npm run release`, preview with `npm run release:dry`). Configuration lives in
+`.release-it.json`: the version in the root `package.json` is the marketplace version, tags are `v<version>`, and the
+`@release-it/conventional-changelog` plugin generates the release notes from Conventional Commits since the last tag
+into `CHANGELOG.md` (never edit the generated entries by hand). `chore`, `ci`, `test`, `build`, and `style` commits are
+hidden from the changelog, so use `feat`/`fix`/`refactor`/`docs` for anything users should see. The plugin manifests
+(`<plugin>/.claude-plugin/plugin.json`) keep their own versions and are not bumped by release-it.

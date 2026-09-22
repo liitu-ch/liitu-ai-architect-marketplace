@@ -438,6 +438,23 @@ An **MCP (Model Context Protocol) Server** is an external service that provides 
 documentation, and capabilities. MCP servers extend what Claude can do by connecting it to external resources like
 documentation databases, APIs, and other integrations. They start automatically when the plugin is enabled.
 
+## Releasing
+
+Releases are cut with [release-it](https://github.com/release-it/release-it) from the `main` branch. The version bump
+and the release notes are derived from the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+since the last `v*` tag; the notes are prepended to [CHANGELOG.md](CHANGELOG.md) and used as the GitHub release body.
+
+```shell
+npm install                              # once, installs release-it
+export GITHUB_TOKEN=$(gh auth token)     # needed for the GitHub release
+npm run release:dry                      # preview version and changelog, changes nothing
+npm run release                          # bump, changelog, commit, tag, push, GitHub release
+```
+
+`feat` commits bump the minor version, `fix`/`perf`/`refactor`/`docs` bump the patch version, and a `!` or
+`BREAKING CHANGE:` footer bumps the major version. `chore`, `ci`, `test`, `build` and `style` commits are excluded
+from the changelog. To force a specific version, pass it explicitly: `npx release-it minor` or `npx release-it 3.0.0`.
+
 ## Security
 
 Plugins and marketplaces are highly trusted components that can execute arbitrary code on your machine with your user
