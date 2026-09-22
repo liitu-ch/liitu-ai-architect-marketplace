@@ -34,6 +34,142 @@ Skills follow a sequential software development workflow:
 | **ai-architect-testing**   |                    | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
 | **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-commit`                                              |
 
+Each command in the table is a link in one chain — see [Development Workflow](#development-workflow) for how the
+skills hand their results to each other.
+
+## Development Workflow
+
+The three plugins are not a loose collection of commands. They form a pipeline: every skill reads the documents
+that earlier skills produced and writes exactly one artifact of its own — usually a file under `docs/`. That is
+the whole principle. Requirements, model, use cases, implementation plan, tests, and guides are linked through
+these files, so every line of code traces back to a requirement, and every requirement shows whether it has been
+delivered.
+
+### Phases at a glance
+
+The workflow has two halves. The **project foundation** is built once: the requirements catalog, the entity model,
+the use case overview, and the binding conventions for code and tests. After that, the team works **one use case
+at a time**, repeating the same construction and verification loop until every use case is implemented.
+`/ai-commit` wraps up each step in every phase with a conventional commit.
+
+```mermaid
+flowchart LR
+    subgraph once["Once per project"]
+        direction LR
+        P1["① Inception<br/><br/>/ai-requirements"]
+        P2["② Elaboration<br/><br/>/ai-entity-model<br/>/ai-use-case-diagram<br/>/ai-guidelines<br/>/ai-testing-concept<br/>/ai-create-user-guide-template"]
+        P1 --> P2
+    end
+
+    subgraph loop["Per use case · repeated until every UC-XXX is Implemented"]
+        direction LR
+        P3["③ Construction<br/><br/>/ai-use-case-spec UC-XXX<br/>/ai-implement-use-case UC-XXX"]
+        P4["④ Verification<br/><br/>/ai-vitest<br/>/ai-playwright-test<br/>/ai-code-review<br/>/ai-manual-test<br/>/ai-user-guide"]
+        P3 --> P4
+        P4 -. "next use case" .-> P3
+    end
+
+    P2 --> P3
+    P4 ~~~ commit["⟳ /ai-commit<br/>after every step, in every phase"]
+
+    classDef phase fill:#f3f4f6,stroke:#6b7280,color:#1f2328
+    classDef devtools fill:#fef3c7,stroke:#b45309,color:#1f2328
+    class P1,P2,P3,P4 phase
+    class commit devtools
+```
+
+### How artifacts flow between skills
+
+In this diagram the nodes are files and the edges are the skills that turn one file into the next. A skill's main
+input is not a prompt but the document an earlier skill wrote: `/ai-requirements` starts from the team's
+`docs/vision.md`, `/ai-use-case-spec` picks a use case from the diagram, and `/ai-implement-use-case` reads the
+spec, the requirements, the entity model, and the guidelines to produce a plan. When a required input is missing,
+the skill stops and names the skill that creates it instead of improvising.
+
+The foundation documents on the left are written once from the codebase and then read by every later skill:
+`/ai-implement-use-case` carries the rules from `docs/guidelines/` into each plan, `/ai-code-review` enforces them
+on the diff, the test skills follow `TESTING.md`, and `/ai-user-guide` fills the project's own guide template.
+
+```mermaid
+flowchart TB
+    subgraph foundation["Project foundation · created once, read by every later skill"]
+        direction LR
+        codebase[("codebase")]
+        gl[/"docs/guidelines/<br/>components · styling · glossary"/]
+        tc[/"TESTING.md"/]
+        ugt[/"docs/user-guides/templates/"/]
+        codebase -- "/ai-guidelines" --> gl
+        codebase -- "/ai-testing-concept" --> tc
+        codebase -- "/ai-create-user-guide-template" --> ugt
+    end
+
+    vision[/"docs/vision.md"/]
+    req[/"docs/requirements.md<br/>FR-XXX · NFR-XXX · C-XXX"/]
+    em[/"docs/entity_model.md"/]
+    ucd[/"docs/use_cases.md<br/>actors · UC-XXX"/]
+    ucs[/"docs/use_cases/UC-XXX.md<br/>scenarios · BR-XXX"/]
+    plan[/"docs/implementation/UC-XXX/plan.md"/]
+    src[("source code")]
+    tests[("unit & E2E tests")]
+    mtp[/"docs/test-plans/{feature}.md"/]
+    guide[/"docs/user-guides/UC-XXX_Guide.docx"/]
+    findings["review findings"]
+
+    vision -- "/ai-requirements" --> req
+    req -- "/ai-entity-model" --> em
+    req -- "/ai-use-case-diagram" --> ucd
+    ucd -- "/ai-use-case-spec" --> ucs
+    ucs -- "/ai-implement-use-case" --> plan
+    plan -- "implement" --> src
+    src -- "/ai-code-review" --> findings
+    ucs -- "/ai-vitest · /ai-playwright-test" --> tests
+    ucs -- "/ai-manual-test" --> mtp
+    ucs -- "/ai-user-guide" --> guide
+
+    classDef artifact fill:#f3f4f6,stroke:#6b7280,color:#1f2328
+    classDef store fill:#e0f2fe,stroke:#0369a1,color:#1f2328
+    class vision,req,em,ucd,ucs,gl,tc,ugt,plan,mtp,guide,findings artifact
+    class codebase,src,tests store
+```
+
+### The use case cycle
+
+Once the foundation exists, delivering a feature means running the cycle below for one `UC-XXX` at a time. The
+implementation plan is a living document: its checkboxes are ticked off as tasks are completed, and its last task
+is the **status sync** — the affected `FR-XXX` entries in `docs/requirements.md` and the use case itself move to
+`Implemented` in the same change as the code, once the behavior is verified in the running app. That step is what
+keeps the requirements catalog truthful, and `/ai-code-review` checks that it was not forgotten.
+
+```mermaid
+flowchart TD
+    pick([Pick the next UC-XXX from docs/use_cases.md]) --> spec
+    spec["/ai-use-case-spec UC-XXX<br/>→ docs/use_cases/UC-XXX.md"] --> plan
+    plan["/ai-implement-use-case UC-XXX<br/>→ docs/implementation/UC-XXX/plan.md"] --> impl
+    impl["Implement the plan's tasks<br/>docs/guidelines/ is binding"] --> unit & e2e
+    unit["/ai-vitest"] --> review
+    e2e["/ai-playwright-test"] --> review
+    review["/ai-code-review"] --> findings{Findings?}
+    findings -- "yes → fix" --> impl
+    findings -- "no" --> sync
+    sync["Status sync<br/>FR-XXX + UC-XXX → Implemented"] --> commit
+    commit["/ai-commit"] --> manual & guide
+    manual["/ai-manual-test<br/>→ docs/test-plans/"] --> done
+    guide["/ai-user-guide<br/>→ docs/user-guides/"] --> done
+    done([Use case done]) -.-> pick
+
+    classDef core fill:#dbeafe,stroke:#1d4ed8,color:#1f2328
+    classDef testing fill:#dcfce7,stroke:#15803d,color:#1f2328
+    classDef devtools fill:#fef3c7,stroke:#b45309,color:#1f2328
+    classDef step fill:#f3f4f6,stroke:#6b7280,color:#1f2328
+    class spec core
+    class unit,e2e,manual,guide testing
+    class plan,review,commit devtools
+    class pick,impl,sync,done step
+```
+
+Colors mark the plugin a skill belongs to: blue for `ai-architect-core`, green for `ai-architect-testing`, and
+amber for `ai-architect-dev-tools`.
+
 ## Installation
 
 Using a marketplace is a two-step process: first add the marketplace catalog, then install the plugins you want.
