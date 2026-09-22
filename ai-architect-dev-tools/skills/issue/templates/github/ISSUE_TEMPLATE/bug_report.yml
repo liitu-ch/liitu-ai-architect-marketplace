@@ -1,0 +1,107 @@
+# GitHub issue form (best practice: .github/ISSUE_TEMPLATE/*.yml) for a Bug — the code deviates from the specification.
+# Installed by the `issue` skill (ai-architect-dev-tools). Translate labels and descriptions into the team's working language;
+# keep IDs (UC-XXX, FR-XXX, BR-XXX) and status values in English.
+name: Bug
+description: The behaviour deviates from a use case, requirement, or business rule.
+title: "Testingfeedback FR-XXX (Area): observed — expected"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A bug is a deviation from an **existing** spec sentence. If the spec is silent or contradictory, file a **Change Request** instead.
+  - type: input
+    id: requirement
+    attributes:
+      label: Requirement / Use case
+      description: The governing IDs, e.g. FR-105, UC-007, BR-020.
+      placeholder: FR-XXX / UC-XXX / BR-XXX
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Source
+      options:
+        - Field test
+        - Code review
+        - Development
+        - Stakeholder
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed
+      description: What happened, in the reporter's words. Attach screenshots or log excerpts.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+      description: What should happen — quote the spec sentence (UC step, alternative flow, or BR) with its file reference.
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Mock server
+        - Test backend
+        - Production
+        - Device build (iOS)
+        - Device build (Android)
+        - Browser
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Test data (entity and identifiers, e.g. customer 44724477, order 5027173828), numbered steps, and the result with exact values. State "not attempted" and why when it was not reproduced.
+      value: |
+        **Test data:** entity `identifier` in state …
+
+        1. …
+        2. …
+        3. Result: …
+    validations:
+      required: true
+  - type: textarea
+    id: root-cause
+    attributes:
+      label: Root cause
+      description: Why it happened — the decision, missing rule, or gap. Origin (Spec / Code / Data / External system / Process), code location, defect class, regression origin (PR/commit).
+  - type: textarea
+    id: undetected
+    attributes:
+      label: Why undetected
+      description: Why the tests (unit, E2E, manual plan) and the code review did not catch it, and which test or review rule closes the gap.
+      value: |
+        - **Tests:** …
+        - **Review:** …
+        - **Guidelines:** …
+  - type: textarea
+    id: tasks
+    attributes:
+      label: To implement
+      value: |
+        - [ ] …
+        - [ ] Regression test: …
+        - [ ] Status sync: docs/requirements.md and docs/use_cases/UC-XXX.md
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] …
+        - [ ] Regression test covers the reported case
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Spec files, related issues and PRs, affected files, report source.

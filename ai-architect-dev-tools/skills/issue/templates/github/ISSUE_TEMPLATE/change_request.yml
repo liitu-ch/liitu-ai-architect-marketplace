@@ -1,0 +1,108 @@
+# GitHub issue form (best practice: .github/ISSUE_TEMPLATE/*.yml) for a Change Request — the specification is silent,
+# contradictory, outdated, or the stakeholder now expects different behaviour. Installed by the `issue` skill
+# (ai-architect-dev-tools). Translate labels and descriptions into the team's working language; keep IDs and statuses in English.
+name: Change Request
+description: The specification is silent, contradictory, outdated, or the required behaviour has changed.
+title: "Anforderungsänderung FR-XXX (Area): what changes"
+labels: ["change-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A change request changes the **specification first** (use case, requirement, business rule, entity model) and the implementation second. The affected use case moves to `Revision Required` once the change is accepted.
+  - type: input
+    id: requirement
+    attributes:
+      label: Requirement / Use case
+      placeholder: FR-XXX / UC-XXX / BR-XXX
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - Spec gap (case not covered)
+        - Spec contradiction (FR vs. BR, BR vs. BR, UC vs. UC)
+        - Requirement change (stakeholder expects different behaviour)
+        - Documentation drift (obsolete or duplicate rules)
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Source
+      options:
+        - Field test
+        - Code review
+        - Development
+        - Stakeholder
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed and expected
+      description: What happens today (spec-conform or undefined) and what the reporter or stakeholder expects instead.
+    validations:
+      required: true
+  - type: textarea
+    id: current-spec
+    attributes:
+      label: Current specification
+      description: Quote the current spec sentence(s) with file references, or state where the spec is silent or contradicts itself.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Environment, test data (entity and identifiers), steps, and the result.
+      value: |
+        **Test data:** entity `identifier` in state …
+
+        1. …
+        2. Result: …
+  - type: textarea
+    id: root-cause
+    attributes:
+      label: Root cause
+      description: Why the spec is silent, wrong, or outdated — the decision or omission, its origin (issue, workshop, date), and why the spec review, tests, and code review did not surface it.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Change proposal
+      description: One or more options with effort and consistency against the existing rules.
+      value: |
+        | Option | Description | Effort | Consistency with existing rules |
+        | ------ | ----------- | ------ | ------------------------------- |
+        | A      | …           | …      | …                               |
+  - type: textarea
+    id: clarify
+    attributes:
+      label: To clarify
+      description: Questions for the stakeholder, the assumption taken in the meantime, and the affected IDs.
+  - type: textarea
+    id: tasks
+    attributes:
+      label: To implement (after decision)
+      value: |
+        - [ ] Update spec: docs/use_cases/UC-XXX.md
+        - [ ] Update requirements: docs/requirements.md
+        - [ ] Implementation: …
+        - [ ] Regression test: …
+        - [ ] Status sync: FR-XXX and UC-XXX
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Spec and code agree: …
+        - [ ] …
+        - [ ] Regression test covers the case
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: References

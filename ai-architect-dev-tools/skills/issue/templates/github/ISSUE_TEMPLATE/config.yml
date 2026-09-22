@@ -1,0 +1,9 @@
+# GitHub issue template chooser configuration.
+# Installed into <project>/.github/ISSUE_TEMPLATE/ by the `issue` skill (ai-architect-dev-tools) on request.
+# Disabling blank issues forces every issue through a form, so the sections the skill relies on
+# (reproduction with test data, root cause, why undetected, acceptance criteria) are always present.
+blank_issues_enabled: false
+contact_links:
+  - name: Question / clarification
+    url: https://github.com/OWNER/REPO/discussions
+    about: Stakeholder decisions and open questions that are not yet a bug or a change request. Replace the URL with your discussions board or wiki, or remove this entry.
