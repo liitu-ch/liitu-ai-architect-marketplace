@@ -14,7 +14,8 @@ This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketpl
   builder for project-specific user-guide/app-manual templates.
 - **`ai-architect-dev-tools`** — developer workflow tools with skills for creating conventional commits,
   project-level implementation guidelines (UI component reuse, styling rules, conventions), structured use
-  case implementation plans, and code review against the project conventions through guided interaction.
+  case implementation plans, code review against the project conventions, and capturing GitHub issues with a
+  root cause analysis (spec gaps, code defects, test and review gaps) through guided interaction.
 
 ## Repository Structure
 
@@ -48,6 +49,9 @@ Skills live in `<plugin>/skills/<skill-name>/SKILL.md`. Some skills have support
   app manual organised by app area, screenshot capture spec, Playwright config)
 - `ai-architect-dev-tools/skills/guidelines/templates/guidelines/` — per-chapter templates for the project
   implementation guidelines (`docs/guidelines/`), consumed by the `implement-use-case` skill
+- `ai-architect-dev-tools/skills/issue/templates/` — issue body templates (`issue-bug.md`,
+  `issue-change-request.md`) and GitHub issue forms (`github/ISSUE_TEMPLATE/`) that the `issue` skill installs
+  into a project on request
 
 ## Skill Authoring Conventions
 
@@ -61,8 +65,8 @@ All skills follow these patterns:
   `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`,
   `docs/user-guides/UC-XXX_{name}_Guide.md` plus the converted `.docx`,
   `docs/user-guides/templates/{user-guide|app-manual}-template.md`). Exceptions: `testing-concept`
-  writes `TESTING.md` at the project root; `commit` and `code-review` produce no document (a git commit and a
-  findings report, respectively).
+  writes `TESTING.md` at the project root; `commit`, `code-review`, and `issue` produce no document (a git commit,
+  a findings report, and a GitHub issue created via `gh`, respectively).
 - **Quality checks**: Skills include validation checklists at the end of their workflows.
 - **$ARGUMENTS**: Used for user-provided input (e.g., the `use-case-spec` skill receives the use case to
   document via `$ARGUMENTS`).

@@ -24,7 +24,7 @@ The marketplace contains three plugins:
   tests, Vitest unit tests including architecture/layer-boundary checks, manual test plans, end-user guides as
   Word documents with screenshots, and an interactive builder for project-specific guide templates).
 - **ai-architect-dev-tools** — Developer workflow tools (conventional commits, project implementation guidelines,
-  use case implementation plans, code review against project conventions).
+  use case implementation plans, code review against project conventions, GitHub issues with root cause analysis).
 
 Skills follow a sequential software development workflow:
 
@@ -32,7 +32,7 @@ Skills follow a sequential software development workflow:
 | -------------------------- | ------------------ | --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
 | **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram`              | `/ai-use-case-spec`                      |                                                                                |
 | **ai-architect-testing**   |                    | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
-| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-commit`                                              |
+| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-issue`<br>`/ai-commit`                               |
 
 ## Installation
 
@@ -126,17 +126,18 @@ automated E2E tests, unit tests (including architecture/layer-boundary checks), 
 ### ai-architect-dev-tools
 
 Developer workflow tools that streamline day-to-day implementation work — from documenting implementation
-guidelines and planning a use case to reviewing changes against those guidelines and crafting a conventional
-commit — through guided interaction.
+guidelines and planning a use case to reviewing changes against those guidelines, capturing issues with a real
+root cause analysis, and crafting a conventional commit — through guided interaction.
 
 #### Skills & Commands
 
-| Command                  | Skill                                        | Description                                                                                                                                                                                              |
-| ------------------------ | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7 |
-| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                 |
-| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                      |
-| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                           |
+| Command                  | Skill                                        | Description                                                                                                                                                                                                                         |
+| ------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7                            |
+| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                                            |
+| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                                                 |
+| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                                                      |
+| `/ai-issue`              | `/ai-architect-dev-tools:issue`              | Captures a GitHub issue with root cause analysis — locates the governing UC/FR/BR, checks the spec for gaps and contradictions, explains why tests and code review missed it, asks for test data, classifies Bug vs. Change Request |
 
 #### MCP Servers
 

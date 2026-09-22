@@ -19,7 +19,7 @@
     {
       "name": "ai-architect-dev-tools",
       "source": "./ai-architect-dev-tools",
-      "description": "Developer workflow tools for Claude \u2014 create conventional commits, project implementation guidelines, structured use case implementation plans, and project-convention code reviews through guided slash commands."
+      "description": "Developer workflow tools for Claude \u2014 create conventional commits, project implementation guidelines, structured use case implementation plans, project-convention code reviews, and GitHub issues with root cause analysis through guided slash commands."
     }
   ]
 }
