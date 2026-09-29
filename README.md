@@ -52,7 +52,8 @@ the use case overview, and the binding conventions for code and tests. After tha
 at a time**, repeating the same construction and verification loop until every use case is implemented.
 `/ai-commit` wraps up each step in every phase with a conventional commit. Findings that surface later — from
 field tests, reviews, or stakeholders — enter the loop again through `/ai-issue`, which traces each finding back
-to the spec, the code, the tests, and the review before it becomes a Bug or a Change Request.
+to the spec, the code, the tests, and the review before it becomes a Bug, a Change Request, a Clarification, or a
+Technical task.
 
 ```mermaid
 flowchart LR
@@ -289,13 +290,13 @@ root cause analysis, and crafting a conventional commit — through guided inter
 
 #### Skills & Commands
 
-| Command                  | Skill                                        | Description                                                                                                                                                                                                                         |
-| ------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7                            |
-| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                                            |
-| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                                                 |
-| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                                                      |
-| `/ai-issue`              | `/ai-architect-dev-tools:issue`              | Captures a GitHub issue with root cause analysis — locates the governing UC/FR/BR, checks the spec for gaps and contradictions, explains why tests and code review missed it, asks for test data, classifies Bug vs. Change Request |
+| Command                  | Skill                                        | Description                                                                                                                                                                                                                                                        |
+| ------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/ai-guidelines`         | `/ai-architect-dev-tools:guidelines`         | Creates a binding `docs/guidelines/` directory documenting UI component reuse, styling rules, naming & language conventions, and a domain glossary, validated against official library docs via Context7                                                           |
+| `/ai-implement-use-case` | `/ai-architect-dev-tools:implement-use-case` | Creates a structured implementation plan for a use case with traceability, guidelines, and ordered tasks                                                                                                                                                           |
+| `/ai-commit`             | `/ai-architect-dev-tools:commit`             | Creates conventional commits by analyzing changes, asking about type/scope, and generating messages                                                                                                                                                                |
+| `/ai-code-review`        | `/ai-architect-dev-tools:code-review`        | Reviews changes or a PR against project conventions (language, i18n, UI consistency, status sync) and recurring defect classes                                                                                                                                     |
+| `/ai-issue`              | `/ai-architect-dev-tools:issue`              | Captures a GitHub issue with root cause analysis — locates the governing UC/FR/BR, checks the spec for gaps and contradictions, explains why tests and code review missed it, asks for test data, classifies Bug / Change Request / Clarification / Technical task |
 
 #### MCP Servers
 
