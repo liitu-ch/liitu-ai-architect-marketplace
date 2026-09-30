@@ -50,7 +50,7 @@ Skills live in `<plugin>/skills/<skill-name>/SKILL.md`. Some skills have support
 - `ai-architect-dev-tools/skills/guidelines/templates/guidelines/` — per-chapter templates for the project
   implementation guidelines (`docs/guidelines/`), consumed by the `implement-use-case` skill
 - `ai-architect-dev-tools/skills/issue/templates/` — issue body templates (`issue-bug.md`,
-  `issue-change-request.md`) and GitHub issue forms (`github/ISSUE_TEMPLATE/`) that the `issue` skill installs
+  `issue-change-request.md`, `issue-technical.md`) and GitHub issue forms (`github/ISSUE_TEMPLATE/`) that the `issue` skill installs
   into a project on request
 
 ## Skill Authoring Conventions

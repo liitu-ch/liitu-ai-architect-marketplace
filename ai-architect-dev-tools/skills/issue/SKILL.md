@@ -7,8 +7,10 @@ description: >
   is wrong, contradictory, or silent, finds the code deviation and whether it is
   a regression, and explains why the existing tests and the code review did not
   catch it. Asks about available test data and the affected entity for
-  reproduction, classifies the finding as Bug or Change Request, and creates the
-  issue via `gh` using the project's GitHub issue template. Use when the user
+  reproduction, classifies the finding as Bug, Change Request, Clarification, or
+  Technical task, applies the project's label conventions (one label per group,
+  e.g. type, source, priority, area), and creates the issue via `gh` using the
+  project's GitHub issue template. Use when the user
   asks to "create an issue", "file a bug", "report a bug", "capture testing
   feedback", "Issue erfassen", "Bug melden", "Testingfeedback erfassen", asks
   "why did this bug happen" or for a "root cause", or pastes a field-test
@@ -32,6 +34,8 @@ The skill closes the loop of the other AI Architect skills: it reads the artifac
 - Change code, specs, tests, or requirement statuses during this skill — such changes become tasks in the issue and are offered as follow-ups
 - Write the issue body in a language other than the team's working language — IDs (`UC-XXX`, `FR-XXX`, `BR-XXX`), status values, and code identifiers stay in English
 - Ignore an existing project issue template (`.github/ISSUE_TEMPLATE/`) — when one exists, its sections and fields are binding
+- Force a finding without any governing requirement (security, accessibility, tests/CI, build, dependencies, refactoring, internal documentation consistency) into Bug or Change Request — it is a **Technical task**
+- Pick labels ad hoc — when the project documents label groups (a label catalogue or an issue guideline, see Step 3), set exactly one label per group, only from that catalogue, and never a label the project has retired
 - Ask reproduction and classification questions as free-form prose — use the `AskUserQuestion` tool as described below
 
 ## Workflow
@@ -62,7 +66,7 @@ Parse $ARGUMENTS. If it is an issue number, load it with `gh issue view <n> --co
 
 Then **use the `AskUserQuestion` tool** in a single call (max 4 questions) to collect what reproduction needs. Ground every option in the project: derive entity names from `docs/entity_model.md`, environments from `TESTING.md` and the project's run scripts. Mark the most plausible option "(Recommended)" and rely on the built-in "Other" choice for anything else.
 
-1. **Source** (header "Source"): field test / code review / development / stakeholder request — skip if $ARGUMENTS already says so.
+1. **Source** (header "Source"): if the project's issue forms (`.github/ISSUE_TEMPLATE/*.yml`) have a source dropdown, offer exactly its options (projects often list who reported it, e.g. the business department, IT, or development); otherwise field test / code review / development / stakeholder request. Skip if $ARGUMENTS already says so; record the occasion (field-test row, workshop item, review of PR #n) separately.
 2. **Test data** (header "Test data"): "Yes — known records exist" / "Yes — in the mock seed" / "No — must be created" / "Unknown".
 3. **Entity** (header "Entity", `multiSelect: true`): which entities from the entity model are involved in reproducing the problem (e.g. Customer, Order, Material, Configuration). Offer the four most plausible ones from the symptom.
 4. **Environment** (header "Environment"): where the problem was observed and where it should be reproduced — mock server / test backend / production / device build (iOS, Android, browser).
@@ -82,15 +86,19 @@ Read these documents; note as missing where absent:
 
 Detect the **issue conventions** of the project:
 
-- **Project issue template**: look for `.github/ISSUE_TEMPLATE/*.yml` or `*.md` in the repository, then in the organisation's `.github` repository (`gh api repos/<org>/.github/contents/.github/ISSUE_TEMPLATE`). If a template exists, its sections or form fields are binding for the issue body — fill every field. If none exists, use this skill's templates ([templates/issue-bug.md](templates/issue-bug.md), [templates/issue-change-request.md](templates/issue-change-request.md)) and note in the final report that the project has no issue template (the GitHub best-practice forms in [templates/github/ISSUE_TEMPLATE/](templates/github/ISSUE_TEMPLATE/) can be installed as a follow-up).
-- **Labels**: `gh label list` — only existing labels are offered in Step 7.
-- **House style**: `gh issue list --limit 20 --state all` — learn the title pattern (e.g. `Testingfeedback FR-XXX (Bereich): Ist — Soll`), the language, and the recurring section headings. New issues follow the observed style, not the skill's defaults, unless the user asks otherwise.
+- **Project issue template**: look for `.github/ISSUE_TEMPLATE/*.yml` or `*.md` in the repository, then in the organisation's `.github` repository (`gh api repos/<org>/.github/contents/.github/ISSUE_TEMPLATE`). If a template exists, its sections or form fields are binding for the issue body — fill every field. If none exists, use this skill's templates ([templates/issue-bug.md](templates/issue-bug.md), [templates/issue-change-request.md](templates/issue-change-request.md), [templates/issue-technical.md](templates/issue-technical.md)) and note in the final report that the project has no issue template (the GitHub best-practice forms in [templates/github/ISSUE_TEMPLATE/](templates/github/ISSUE_TEMPLATE/) can be installed as a follow-up).
+- **Labels**: `gh label list` — only existing labels are offered in Step 7. Then look for documented label conventions: a label catalogue (`.github/labels.yml` or `.json`) and an issue guideline (`docs/guidelines/issues.md`, `CONTRIBUTING.md`, or an issues section in `CLAUDE.md`). Record:
+  - the **label groups** (e.g. type, source, priority, area) — each issue gets exactly one label per group; a group may stay empty only where the guideline says so (e.g. an area option like "cross-cutting" that maps to no label)
+  - the **type label** of each issue form (its `labels:` key) — the form chosen in Step 7 decides the type label
+  - how **form dropdown values map to labels** (e.g. an `option` field per catalogue entry) — use this mapping, do not re-derive it
+  - **retired labels** and their replacements — never offer a retired label
+- **House style**: `gh issue list --limit 20 --state all` — learn the title pattern (e.g. `FR-XXX (Bereich): Ist — Soll`), the language, and the recurring section headings. New issues follow the observed style, not the skill's defaults, unless the user asks otherwise. A title format documented in the issue guideline or in the forms' `title:` key overrides the history — do not copy prefixes (source, occasion, type) that the guideline moves into labels or fields.
 
 Mark this todo done.
 
 ### Step 4: Locate spec, code, and related issues
 
-**Specification.** Find the use case, requirements, and business rules that govern the observed behaviour. Search `docs/use_cases/*.md` and `docs/requirements.md` for the nouns and actions in the report (derive search terms as the `implement-use-case` skill does — from the actor, goal, and key nouns, not only from IDs). Record:
+**Specification.** Find the use case, requirements, and business rules that govern the observed behaviour. For a technical finding (Step 6a) there may be none — record "no governing requirement" and still record the area of the app it affects. Search `docs/use_cases/*.md` and `docs/requirements.md` for the nouns and actions in the report (derive search terms as the `implement-use-case` skill does — from the actor, goal, and key nouns, not only from IDs). Record:
 
 - Governing UC(s) with status, the FR(s) with status and priority, the BR(s) — with file paths and line numbers
 - The exact sentence(s) that define the expected behaviour for this case — quote them. If no sentence covers the case, record "spec silent".
@@ -121,13 +129,14 @@ Work through the four layers in order. Keep asking "why" until the answer is a d
 
 Compare the observed behaviour with the governing spec from Step 4:
 
-| Finding                                                                      | Meaning             | Consequence                                                                                         |
-| ---------------------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------- |
-| Spec defines the expected behaviour, the code deviates                       | Code defect         | **Bug**                                                                                             |
-| Spec is silent — no step, alternative flow, or BR covers the case            | Spec gap            | **Change Request**: spec update (`/ai-use-case-spec`) plus implementation; UC → `Revision Required` |
-| Spec contradicts itself — FR vs. BR, BR vs. BR, UC vs. UC, spec vs. glossary | Spec defect         | **Change Request** with a stakeholder decision under "To clarify"                                   |
-| Spec and code agree, but the stakeholder now expects something else          | Requirement change  | **Change Request** (`/ai-requirements`, `/ai-use-case-spec`)                                        |
-| Spec is outdated — obsolete BR, duplicate IDs, references to removed rules   | Documentation drift | **Change Request** (documentation)                                                                  |
+| Finding                                                                                                                 | Meaning                  | Consequence                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------- |
+| Spec defines the expected behaviour, the code deviates                                                                  | Code defect              | **Bug**                                                                                             |
+| Spec is silent — no step, alternative flow, or BR covers the case                                                       | Spec gap                 | **Change Request**: spec update (`/ai-use-case-spec`) plus implementation; UC → `Revision Required` |
+| Spec contradicts itself — FR vs. BR, BR vs. BR, UC vs. UC, spec vs. glossary                                            | Spec defect              | **Change Request** with a stakeholder decision under "To clarify"                                   |
+| Spec and code agree, but the stakeholder now expects something else                                                     | Requirement change       | **Change Request** (`/ai-requirements`, `/ai-use-case-spec`)                                        |
+| Spec is outdated — obsolete BR, duplicate IDs, references to removed rules                                              | Documentation drift      | **Change Request** (documentation)                                                                  |
+| No requirement involved — security, accessibility, tests/CI, build, dependencies, refactoring, internal doc consistency | Technical defect or debt | **Technical task**: spec analysis is "not applicable"; 6b–6d stay mandatory                         |
 
 Additional checks, each of which is a finding on its own:
 
@@ -181,9 +190,9 @@ Mark this todo done.
 
 **Use the `AskUserQuestion` tool** in a single call (max 4 questions). Put your recommendation first and label it "(Recommended)"; the option descriptions carry the evidence from Step 6 so the user can decide without re-reading the analysis.
 
-1. **Type** (header "Type"): **Bug** (code deviates from a quoted spec sentence) / **Change Request** (spec gap, spec defect, requirement change, or documentation drift) / **Clarification needed** (a stakeholder decision must precede any implementation — the issue is created as a question).
+1. **Type** (header "Type"): **Bug** (code deviates from a quoted spec sentence) / **Change Request** (spec gap, spec defect, requirement change, or documentation drift) / **Clarification needed** (a stakeholder decision must precede any implementation — the issue is created as a question) / **Technical task** (no governing requirement — security, accessibility, tests/CI, build, refactoring). Each type maps to the matching project issue form, if any.
 2. **Priority** (header "Priority"): High / Medium / Low. Recommend High for data loss, wrong amounts or prices, sync and duplicate records, blocked core journeys; Medium for wrong but recoverable behaviour; Low for cosmetic findings.
-3. **Labels** (header "Labels", `multiSelect: true`): only labels that exist in the repository (Step 3), pre-selected to match the type and source (e.g. `bug`, `change-request`, `question`, a testing-feedback label).
+3. **Labels** (header "Labels", `multiSelect: true`): only labels that exist in the repository (Step 3). If the project documents label groups, pre-select exactly one per group — type from the chosen form, source and priority from the answers, area from the governing UC — and list the proposed set in one option so the user confirms it at once; otherwise pre-select to match type and source (e.g. `bug`, `change-request`, `question`).
 4. **Follow-ups** (header "Follow-ups", `multiSelect: true`): which detected gaps get their own issue — spec correction, missing test, review-checklist rule, guideline rule — or "fold into this issue".
 
 If Step 6 found several independent root causes, ask in a second call (header "Split") whether to create one issue per root cause (recommended) or one combined issue.
@@ -194,7 +203,7 @@ Mark this todo done.
 
 **Title** — follow the house pattern from Step 3. Default when the project has none: `<Kind> <ID> (<area>): <observed> — <expected>` (e.g. `Testingfeedback FR-105 (Position-Kontextmenü): Menü schliesst nach jedem Mengenschritt — +1/−1 soll offen bleiben`). Keep it under 120 characters; the ID goes into the title so the issue is searchable by requirement.
 
-**Body** — fill the project template if one exists; otherwise use [templates/issue-bug.md](templates/issue-bug.md) or [templates/issue-change-request.md](templates/issue-change-request.md). Whatever the template, the body must contain:
+**Body** — fill the project template if one exists. For an issue form (`*.yml`), render the body exactly as GitHub renders a submitted form: one `### <field label>` heading per field in form order, the answer below it (dropdowns: the option text verbatim; multi-select: comma-separated), `_No response_` for an empty optional field, and no markdown blocks. Automation that parses form answers — e.g. a workflow that sets labels from the dropdowns — then works for issues created with `gh` as well. Without a project template use [templates/issue-bug.md](templates/issue-bug.md), [templates/issue-change-request.md](templates/issue-change-request.md), or [templates/issue-technical.md](templates/issue-technical.md). Whatever the template, the body must contain (for a Technical task, items 1 and 2 name the affected area and the problem instead of a requirement):
 
 1. **Context** — table with requirement/UC, area, priority, current spec status, source, reporter and date; the user story or UC goal quoted
 2. **Finding** — observed vs. expected, with the reporter's words quoted and the spec sentence quoted
@@ -214,7 +223,7 @@ Mark this todo done.
 
 ### Step 9: Create the issue and offer follow-ups
 
-Write the body to a temporary file and create the issue with `gh issue create --title "<title>" --body-file <file> --label <label> …`. For an enrichment of an existing issue use `gh issue edit` (body) or `gh issue comment` (analysis only), as agreed with the user. Report the issue URL.
+Write the body to a temporary file and create the issue with `gh issue create --title "<title>" --body-file <file> --label <label> …` — one `--label` per confirmed label, i.e. one per label group where the project documents groups. For an enrichment of an existing issue use `gh issue edit` (body) or `gh issue comment` (analysis only), as agreed with the user. Report the issue URL.
 
 Create the follow-up issues chosen in Step 7 the same way — each with its origin ("Found while analysing #<n>"), the affected IDs, and acceptance criteria — and link them from the main issue.
 
@@ -238,7 +247,9 @@ Verify before finishing:
 - [ ] The root cause statement names a decision, rule, or gap — not a symptom
 - [ ] "Why undetected" covers tests **and** review, each with the concrete gap and the closing skill or rule
 - [ ] Existing issues were searched; duplicates were not created
-- [ ] The project's issue template (if any) is fully filled; labels exist in the repository
+- [ ] The project's issue template (if any) is fully filled, and a form is rendered as `### <field label>` sections in form order; labels exist in the repository
+- [ ] Where the project documents label groups: exactly one label per group, none retired; the title follows the documented format
+- [ ] A finding without a governing requirement is a Technical task, not a Bug or Change Request
 - [ ] Independent root causes are separate, cross-linked issues
 - [ ] The body is in the team's working language; IDs, statuses, and identifiers are English
 - [ ] Acceptance criteria end with the regression test or a justified manual retest

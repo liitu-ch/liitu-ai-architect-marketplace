@@ -1,0 +1,73 @@
+# GitHub issue form (best practice: .github/ISSUE_TEMPLATE/*.yml) for a Technical task — a finding without a governing
+# requirement: security, accessibility, tests/CI, build, dependencies, refactoring, or internal documentation
+# consistency. Installed by the `issue` skill (ai-architect-dev-tools). Translate labels and descriptions into the team's
+# working language; keep IDs and statuses in English.
+name: Technical task
+description: Security, accessibility, tests/CI, build, dependencies, refactoring, or documentation consistency — no requirement involved.
+title: "(Area): what is wrong"
+labels: ["technical"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For findings without a governing requirement. If the app deviates from a requirement, use **Bug**; if the requirement itself has to change, use **Change Request**.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      options:
+        - Security / personal data
+        - Accessibility
+        - Tests / CI
+        - Build
+        - Dependencies
+        - Refactoring
+        - Documentation consistency
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: input
+    id: found-in
+    attributes:
+      label: Found in
+      placeholder: e.g. review of PR #123
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is wrong and what it leads to, with code or file references.
+    validations:
+      required: true
+  - type: textarea
+    id: root-cause
+    attributes:
+      label: Root cause
+  - type: textarea
+    id: undetected
+    attributes:
+      label: Why undetected
+      description: Why tests, lint, or code review did not find it, and which check closes the gap.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] …
+    validations:
+      required: true
