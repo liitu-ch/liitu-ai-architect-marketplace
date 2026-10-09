@@ -13,6 +13,19 @@ other AI Architect plugins.
 | Inspection   | Artifacts and progress toward goals are inspected frequently           | Status sync, `/ai-code-review`, Sprint Review against the Product Goal          |
 | Adaptation   | Deviations outside acceptable limits are corrected as soon as possible | `/ai-issue` feeds findings back; the backlog is re-ordered, the spec is revised |
 
+## From strategy to Sprint — the goal hierarchy
+
+| Level             | Question                                                           | Owner / where                                                 |
+| ----------------- | ------------------------------------------------------------------ | ------------------------------------------------------------- |
+| Business Strategy | Which guardrails does the organisation set?                        | Organisation; quoted in `docs/vision.md` (constraints, terms) |
+| Product Vision    | Why does the product exist, for whom, what value?                  | Product Owner; `docs/vision.md`                               |
+| Product Strategy  | How is the vision realised (personas, problems, success, roadmap)? | Product Owner; vision's later goals, scope boundaries         |
+| Product Goal      | What is the next measurable step?                                  | Product Owner; `docs/vision.md`, head of `docs/backlog.md`    |
+| Sprint Goal       | Why is this Sprint valuable?                                       | Scrum Team; `docs/implementation/UC-XXX/plan.md`              |
+
+The Product Strategy defines the Product Goal; each level is inspected every Sprint and may change as the team
+learns. A Product Goal is a hypothesis, not a promise.
+
 ## Scrum artifacts and their commitments
 
 | Artifact        | Commitment             | What it answers                                 | Pipeline file                                  |
@@ -44,6 +57,32 @@ The Product Owner is one person, not a committee; the organisation must respect 
 delegated, accountability may not. **Scrum orders, it does not prioritise**: the backlog is a single ordered
 list, two items never share a rank.
 
+### Myths the skills must not reproduce
+
+| Myth                                      | Reality                                                                                 |
+| ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| The PO writes every backlog item          | Writing may be delegated (Developers, stakeholders, Claude); the PO stays accountable   |
+| The PO is the team's project manager      | The PO maximises value; scope, dates and task tracking are not the PO's job in Scrum    |
+| The PO must be technical                  | The Developers own the _how_; the PO knows what delivers the most value                 |
+| The PO only relays what stakeholders want | The PO decides; stakeholders also meet the team directly, at least in the Sprint Review |
+
+### Product Backlog management
+
+Creating, refining, and ordering the backlog: formulate the Product Goal, decide what goes in and what does
+not, order, add detail, break down, size. It clarifies the _why_ and _what_; the _how_ emerges in the Sprint.
+
+- **Saying no** — respectfully and transparently: name the current Product Goal, listen to why the request
+  matters, decide with data (usage, satisfaction, Current and Unrealized Value), record the reason.
+- **Keep it manageable** — a bloated backlog (a long list of random ideas) cannot be ordered, worked through, or
+  understood by stakeholders. Review old items with stakeholders; remove what no longer serves a goal.
+- **Problems, not solutions** — give the Developers the problem; it uses their expertise and builds ownership.
+- **Break down** — large items are ambiguous; smaller valuable slices give at least one Done Increment per
+  Sprint and faster feedback.
+- **Size** — the Developers size, with the technique they choose: absolute (hours), relative (story points,
+  T-shirt sizes), or right sizing (can it be Done within one Sprint? If not, split it).
+- **Feedback** — the Sprint Review is where stakeholders inspect the Increment and the backlog is adapted.
+- **Visible** — the backlog is accessible to the team and the stakeholders; choose the tool for transparency.
+
 ### Ordering factors
 
 Order is a Product Owner decision based on value, risk, dependencies, learning, and cost of delay — never on
@@ -71,6 +110,19 @@ Sources: [Stances of the Product Owner](https://www.scrum.org/resources/blog/sta
 [9 Ways a Product Owner Can Be More Effective](https://www.scrum.org/learning-series/9-ways-product-owner-can-be-more-effective/),
 [Product Vision learning series](https://www.scrum.org/learning-series/product-vision/),
 [Product Backlog Management learning series](https://www.scrum.org/learning-series/product-backlog-management/).
+
+## Qualities of a good Product Vision
+
+| Quality                     | Meaning                                                                                       |
+| --------------------------- | --------------------------------------------------------------------------------------------- |
+| Compelling and aspirational | Makes people want to join; for classic products, focused on the users and their benefit       |
+| Aligned and connected       | Fits the business strategy and uses the organisation's own terms                              |
+| Transparent and concise     | Accessible to everyone, simply worded, allowed to change                                      |
+| Human and relatable         | Connects the product with the people who use it — the common denominator of all audiences     |
+| Clear and unambiguous       | Gives guardrails, says what the product does **not** do, and so helps say no to backlog items |
+
+Several representations for different audiences (statement, one-pager, vision board, presentation) are fine as
+long as they stay current and connected to `docs/vision.md`.
 
 ## Evidence-Based Management (EBM)
 

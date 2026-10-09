@@ -26,6 +26,8 @@ Unsicherheit / Wert / Verzögerungskosten / Lernen.
 | …    |        |                          |              |                                           |                |              |        |                                             |
 | n    | GOAL-2 | [Later goal placeholder] | nachfolgend  | [Sentence (vision.md)]                    | Lernen         | —            | —      | Idea                                        |
 
+**Grösse** schätzen die Developers; Vorschläge ohne ihre Bestätigung tragen den Zusatz `proposed`.
+
 Zustände: **Idea** → **Refining** → **Ready** (UC `Approved` mit Akzeptanzkriterien, Grösse geschätzt) →
 **In Sprint** (Plan `In Progress`) → **Done** (FR `Implemented`/`Verified`).
 

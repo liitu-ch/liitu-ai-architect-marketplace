@@ -58,8 +58,10 @@ Read what exists; note as missing where absent:
 5. `docs/backlog.md` — current Product Goal, if one was set before
 
 Extract: who the users are, what they struggle with today, who pays and who decides, what the product replaces,
-hard constraints (platform, regulation, deadline), and any numbers already stated (user counts, volumes,
-targets).
+hard constraints (platform, regulation, deadline), any numbers already stated (user counts, volumes,
+targets), and the organisation's business strategy as far as the material shows it — its guardrails and its
+own terms, which the vision reuses so that it stays aligned (see the goal hierarchy in
+[REFERENCE.md](../product-backlog/REFERENCE.md)).
 
 Mark this todo done.
 
@@ -122,7 +124,8 @@ against, one at a time. Write it as a block with four fields:
 | **Why this first** | The reason this goal precedes others — the largest Unrealized Value, a hard constraint, a risk to retire      |
 
 Checks: aligned with the vision statement; clear and concise; measurable; a shared understanding is possible
-without further explanation. If the measure has no current value yet, write "baseline to be measured" and add
+without further explanation. The Product Goal is a hypothesis: when the team learns it is wrong, the Product
+Owner changes or abandons it and records that in the revision table. If the measure has no current value yet, write "baseline to be measured" and add
 an open question with an owner — never invent a number. List the next candidate goals under "Nachfolgende
 Ziele / Later goals" without measures; they are refined when the current goal is reached or abandoned.
 
@@ -137,7 +140,10 @@ Verify before finishing:
 - [ ] The Product Goal is an outcome, has a measure with current (or "baseline to be measured") and target value,
       a horizon, and a reason
 - [ ] Every user group in the statement appears in the users-and-stakeholders table
-- [ ] Scope boundaries name at least one deliberate exclusion with its reason
+- [ ] Scope boundaries name at least one deliberate exclusion with its reason, so that a plausible request can
+      be answered with a clear «no» by pointing at the vision
+- [ ] The vision uses the organisation's own terms and the language of its audience (qualities in
+      [REFERENCE.md](../product-backlog/REFERENCE.md))
 - [ ] Every number and date has a source (material or PO answer) — none is invented
 - [ ] Open questions have an owner
 - [ ] The document is in the team's working language; the revision table has today's entry
