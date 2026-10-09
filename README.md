@@ -6,8 +6,10 @@ A collection of plugins that bring AI-powered requirements engineering and syste
 ## What is AI Architect?
 
 AI Architect is a methodology plugin that keeps requirements at the center of your development process. It provides a
-structured workflow from vision to specification, ensuring consistency and traceability throughout your project — from
-requirements catalogs and entity models to use case diagrams and detailed specifications.
+structured workflow from vision to specification to release, ensuring consistency and traceability throughout your
+project — from the product vision and its Product Goal through requirements catalogs, entity models, use case
+diagrams, and detailed specifications to the ordered backlog and the store submission. The Product Owner skills
+follow Scrum and Evidence-Based Management.
 
 All skills follow one language rule: documentation artifacts (requirements, use cases, guidelines, test plans) are
 written in your team's working language, while code artifacts — file names, identifiers, CSS classes, i18n keys,
@@ -16,8 +18,11 @@ test files — are always English. Domain terms map to English code terms throug
 
 ## Architecture
 
-The marketplace contains three plugins:
+The marketplace contains four plugins:
 
+- **ai-architect-product** — Product Owner toolkit grounded in Scrum and Evidence-Based Management (product vision
+  with a measurable Product Goal, ordered Product Backlog, App Store / Google Play listing texts and
+  device-exact store screenshots).
 - **ai-architect-core** — Requirements engineering and system modeling (requirements, entity model, use cases).
   Works with any tech stack.
 - **ai-architect-testing** — Testing toolkit for React projects (project-level testing concept, Playwright E2E
@@ -28,66 +33,79 @@ The marketplace contains three plugins:
 
 Skills follow a sequential software development workflow:
 
-|                            | Inception          | Elaboration                                               | Construction                             | Verification                                                                   |
-| -------------------------- | ------------------ | --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
-| **ai-architect-core**      | `/ai-requirements` | `/ai-entity-model`<br>`/ai-use-case-diagram`              | `/ai-use-case-spec`                      |                                                                                |
-| **ai-architect-testing**   |                    | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |
-| **ai-architect-dev-tools** | `/ai-commit`       | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-issue`<br>`/ai-commit`                               |
+|                            | Inception            | Elaboration                                               | Construction                             | Verification                                                                   | Release                                        |
+| -------------------------- | -------------------- | --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------- |
+| **ai-architect-product**   | `/ai-product-vision` | `/ai-product-backlog`                                     | `/ai-product-backlog` (re-order)         |                                                                                | `/ai-store-listing`<br>`/ai-store-screenshots` |
+| **ai-architect-core**      | `/ai-requirements`   | `/ai-entity-model`<br>`/ai-use-case-diagram`              | `/ai-use-case-spec`                      |                                                                                |                                                |
+| **ai-architect-testing**   |                      | `/ai-testing-concept`<br>`/ai-create-user-guide-template` |                                          | `/ai-playwright-test`<br>`/ai-vitest`<br>`/ai-manual-test`<br>`/ai-user-guide` |                                                |
+| **ai-architect-dev-tools** | `/ai-commit`         | `/ai-guidelines`<br>`/ai-commit`                          | `/ai-implement-use-case`<br>`/ai-commit` | `/ai-code-review`<br>`/ai-issue`<br>`/ai-commit`                               | `/ai-commit`                                   |
 
 Each command in the table is a link in one chain — see [Development Workflow](#development-workflow) for how the
 skills hand their results to each other.
 
 ## Development Workflow
 
-The three plugins are not a loose collection of commands. They form a pipeline: every skill reads the documents
+The four plugins are not a loose collection of commands. They form a pipeline: every skill reads the documents
 that earlier skills produced and writes exactly one artifact of its own — usually a file under `docs/`. That is
-the whole principle. Requirements, model, use cases, implementation plan, tests, and guides are linked through
-these files, so every line of code traces back to a requirement, and every requirement shows whether it has been
-delivered.
+the whole principle. Vision, backlog, requirements, model, use cases, implementation plan, tests, guides, and
+store assets are linked through these files, so every line of code traces back to a requirement, every
+requirement to the Product Goal, and every requirement shows whether it has been delivered.
+
+The pipeline follows Scrum's empiricism: the files make the work **transparent**, the status sync and the review
+**inspect** it against the goals, and `/ai-issue` and `/ai-product-backlog` **adapt** the backlog and the spec.
+The three Scrum commitments have a home: the **Product Goal** in `docs/vision.md` / `docs/backlog.md`, the
+**Sprint Goal** in the implementation plan, the **Definition of Done** in `docs/guidelines/`.
 
 ### Phases at a glance
 
-The workflow has two halves. The **project foundation** is built once: the requirements catalog, the entity model,
-the use case overview, and the binding conventions for code and tests. After that, the team works **one use case
-at a time**, repeating the same construction and verification loop until every use case is implemented.
-`/ai-commit` wraps up each step in every phase with a conventional commit. Findings that surface later — from
-field tests, reviews, or stakeholders — enter the loop again through `/ai-issue`, which traces each finding back
-to the spec, the code, the tests, and the review before it becomes a Bug, a Change Request, a Clarification, or a
-Technical task.
+The workflow has two halves. The **project foundation** is built once: the product vision with its Product Goal,
+the requirements catalog, the entity model, the use case overview, the ordered backlog, and the binding
+conventions for code and tests. After that, the team works **one use case at a time** — the top of the backlog —
+repeating the same construction and verification loop until the Product Goal is reached. `/ai-commit` wraps up
+each step in every phase with a conventional commit. Findings that surface later — from field tests, reviews, or
+stakeholders — enter the loop again through `/ai-issue`, which traces each finding back to the spec, the code, the
+tests, and the review before it becomes a Bug, a Change Request, a Clarification, or a Technical task; Change
+Requests take their place in the backlog through `/ai-product-backlog`. A release closes with the store assets.
 
 ```mermaid
 flowchart LR
     subgraph once["Once per project"]
         direction LR
-        P1["① Inception<br/><br/>/ai-requirements"]
-        P2["② Elaboration<br/><br/>/ai-entity-model<br/>/ai-use-case-diagram<br/>/ai-guidelines<br/>/ai-testing-concept<br/>/ai-create-user-guide-template"]
+        P1["① Inception<br/><br/>/ai-product-vision<br/>/ai-requirements"]
+        P2["② Elaboration<br/><br/>/ai-entity-model<br/>/ai-use-case-diagram<br/>/ai-product-backlog<br/>/ai-guidelines<br/>/ai-testing-concept<br/>/ai-create-user-guide-template"]
         P1 --> P2
     end
 
-    subgraph loop["Per use case · repeated until every UC-XXX is Implemented"]
+    subgraph loop["Per use case · top of the backlog first · until the Product Goal is reached"]
         direction LR
         P3["③ Construction<br/><br/>/ai-use-case-spec UC-XXX<br/>/ai-implement-use-case UC-XXX"]
         P4["④ Verification<br/><br/>/ai-vitest<br/>/ai-playwright-test<br/>/ai-code-review<br/>/ai-manual-test<br/>/ai-user-guide<br/>/ai-issue"]
         P3 --> P4
-        P4 -. "next use case" .-> P3
+        P4 -. "next item · /ai-product-backlog" .-> P3
     end
 
+    P5["⑤ Release<br/><br/>/ai-store-listing<br/>/ai-store-screenshots"]
+
     P2 --> P3
+    P4 --> P5
     P4 ~~~ commit["⟳ /ai-commit<br/>after every step, in every phase"]
 
     classDef phase fill:#f3f4f6,stroke:#6b7280,color:#1f2328
     classDef devtools fill:#fef3c7,stroke:#b45309,color:#1f2328
-    class P1,P2,P3,P4 phase
+    class P1,P2,P3,P4,P5 phase
     class commit devtools
 ```
 
 ### How artifacts flow between skills
 
 In this diagram the nodes are files and the edges are the skills that turn one file into the next. A skill's main
-input is not a prompt but the document an earlier skill wrote: `/ai-requirements` starts from the team's
-`docs/vision.md`, `/ai-use-case-spec` picks a use case from the diagram, and `/ai-implement-use-case` reads the
-spec, the requirements, the entity model, and the guidelines to produce a plan. When a required input is missing,
-the skill stops and names the skill that creates it instead of improvising.
+input is not a prompt but the document an earlier skill wrote: `/ai-product-vision` writes `docs/vision.md` with
+the Product Goal, `/ai-requirements` derives the catalog from it, `/ai-product-backlog` orders the catalog's items
+against the Product Goal, `/ai-use-case-spec` picks a use case from the diagram, and `/ai-implement-use-case`
+reads the spec, the requirements, the entity model, and the guidelines to produce a plan. When a required input
+is missing, the skill stops and names the skill that creates it instead of improvising. At release time,
+`/ai-store-listing` and `/ai-store-screenshots` turn the vision, the implemented requirements, and the E2E
+fixtures into the store assets.
 
 The foundation documents on the left are written once from the codebase and then read by every later skill:
 `/ai-implement-use-case` carries the rules from `docs/guidelines/` into each plan, `/ai-code-review` enforces them
@@ -110,7 +128,10 @@ flowchart TB
         codebase -- "/ai-create-user-guide-template" --> ugt
     end
 
-    vision[/"docs/vision.md"/]
+    po[("Product Owner · stakeholders")]
+    vision[/"docs/vision.md<br/>vision statement · Product Goal"/]
+    backlog[/"docs/backlog.md<br/>ordered items · Ready · Not doing"/]
+    store[/"resources/store/{lang}/<br/>apple.md · google.md · screenshots"/]
     req[/"docs/requirements.md<br/>FR-XXX · NFR-XXX · C-XXX"/]
     em[/"docs/entity_model.md"/]
     ucd[/"docs/use_cases.md<br/>actors · UC-XXX"/]
@@ -124,7 +145,14 @@ flowchart TB
     field[("field-test feedback")]
     issue["GitHub issue<br/>root cause · Bug / Change Request"]
 
+    po -- "/ai-product-vision" --> vision
     vision -- "/ai-requirements" --> req
+    vision -- "/ai-product-backlog" --> backlog
+    req -- "/ai-product-backlog" --> backlog
+    backlog -. "top item" .-> ucs
+    vision -- "/ai-store-listing" --> store
+    req -- "/ai-store-listing" --> store
+    tests -- "/ai-store-screenshots (E2E fixtures)" --> store
     req -- "/ai-entity-model" --> em
     req -- "/ai-use-case-diagram" --> ucd
     ucd -- "/ai-use-case-spec" --> ucs
@@ -136,19 +164,22 @@ flowchart TB
     ucs -- "/ai-user-guide" --> guide
     findings -- "/ai-issue" --> issue
     field -- "/ai-issue" --> issue
+    issue -. "Change Request → /ai-product-backlog" .-> backlog
     issue -. "Change Request → /ai-use-case-spec" .-> ucs
     issue -. "Bug → /ai-implement-use-case" .-> plan
 
     classDef artifact fill:#f3f4f6,stroke:#6b7280,color:#1f2328
     classDef store fill:#e0f2fe,stroke:#0369a1,color:#1f2328
-    class vision,req,em,ucd,ucs,gl,tc,ugt,plan,mtp,guide,findings,issue artifact
-    class codebase,src,tests,field store
+    classDef product fill:#fce7f3,stroke:#be185d,color:#1f2328
+    class req,em,ucd,ucs,gl,tc,ugt,plan,mtp,guide,findings,issue artifact
+    class codebase,src,tests,field,po store
+    class vision,backlog,store product
 ```
 
 ### The use case cycle
 
-Once the foundation exists, delivering a feature means running the cycle below for one `UC-XXX` at a time. The
-implementation plan is a living document: its checkboxes are ticked off as tasks are completed, and its last task
+Once the foundation exists, delivering a feature means running the cycle below for one `UC-XXX` at a time — the
+top **Ready** item of `docs/backlog.md`, chosen by the Product Owner. The implementation plan is a living document: its checkboxes are ticked off as tasks are completed, and its last task
 is the **status sync** — the affected `FR-XXX` entries in `docs/requirements.md` and the use case itself move to
 `Implemented` in the same change as the code, once the behavior is verified in the running app. That step is what
 keeps the requirements catalog truthful, and `/ai-code-review` checks that it was not forgotten.
@@ -161,7 +192,7 @@ is added with the fix.
 
 ```mermaid
 flowchart TD
-    pick([Pick the next UC-XXX from docs/use_cases.md]) --> spec
+    pick([Pick the top Ready item from docs/backlog.md]) --> spec
     spec["/ai-use-case-spec UC-XXX<br/>→ docs/use_cases/UC-XXX.md"] --> plan
     plan["/ai-implement-use-case UC-XXX<br/>→ docs/implementation/UC-XXX/plan.md"] --> impl
     impl["Implement the plan's tasks<br/>docs/guidelines/ is binding"] --> unit & e2e
@@ -177,21 +208,24 @@ flowchart TD
     done([Use case done]) -.-> pick
     done -. "field test / review finding" .-> issue
     issue["/ai-issue<br/>→ GitHub issue with root cause<br/>spec · code · tests · review"]
-    issue -- "Change Request" --> spec
+    issue -- "Change Request" --> backlog
+    backlog["/ai-product-backlog<br/>→ docs/backlog.md re-ordered"] --> spec
     issue -- "Bug" --> impl
 
     classDef core fill:#dbeafe,stroke:#1d4ed8,color:#1f2328
     classDef testing fill:#dcfce7,stroke:#15803d,color:#1f2328
     classDef devtools fill:#fef3c7,stroke:#b45309,color:#1f2328
+    classDef product fill:#fce7f3,stroke:#be185d,color:#1f2328
     classDef step fill:#f3f4f6,stroke:#6b7280,color:#1f2328
     class spec core
     class unit,e2e,manual,guide testing
     class plan,review,commit,issue devtools
+    class backlog product
     class pick,impl,sync,done step
 ```
 
-Colors mark the plugin a skill belongs to: blue for `ai-architect-core`, green for `ai-architect-testing`, and
-amber for `ai-architect-dev-tools`.
+Colors mark the plugin a skill belongs to: blue for `ai-architect-core`, green for `ai-architect-testing`,
+amber for `ai-architect-dev-tools`, and rose for `ai-architect-product`.
 
 ## Installation
 
@@ -213,6 +247,7 @@ This registers the catalog with Claude Code so you can browse what's available. 
 /plugin install ai-architect-core@liitu-ai-architect-marketplace
 /plugin install ai-architect-testing@liitu-ai-architect-marketplace
 /plugin install ai-architect-dev-tools@liitu-ai-architect-marketplace
+/plugin install ai-architect-product@liitu-ai-architect-marketplace
 ```
 
 After installing, run `/reload-plugins` to activate the plugins.
@@ -245,6 +280,22 @@ Team admins can set up automatic marketplace installation by adding this to `.cl
 When team members trust the repository folder, Claude Code prompts them to install these marketplaces and plugins.
 
 ## Available Plugins
+
+### ai-architect-product
+
+Product Owner toolkit grounded in the [Scrum Guide 2020](https://scrumguides.org) and the
+[Evidence-Based Management Guide 2024](https://www.scrum.org/resources/evidence-based-management-guide). It
+gives the pipeline its Product Goal, orders the backlog, and prepares the store submission at release time.
+Works with any tech stack; the screenshot skill needs a Playwright E2E setup.
+
+#### Skills & Commands
+
+| Command                 | Skill                                     | Description                                                                                                                                                                    |
+| ----------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/ai-product-vision`    | `/ai-architect-product:product-vision`    | Writes or sharpens `docs/vision.md`: future-state narrative, vision statement, stakeholders, scope boundaries, and a measurable, outcome-driven Product Goal                   |
+| `/ai-product-backlog`   | `/ai-architect-product:product-backlog`   | Creates or re-orders `docs/backlog.md`: one ordered list from requirements, use cases, and change requests, with value reasoning, refinement state, and a Not-doing list       |
+| `/ai-store-listing`     | `/ai-architect-product:store-listing`     | Writes App Store and Google Play listing texts per language within the stores' character limits, every claim traced to an implemented requirement                              |
+| `/ai-store-screenshots` | `/ai-architect-product:store-screenshots` | Generates store screenshots in the exact device-slot sizes with the project's Playwright fixtures, realistic showcase data, hidden dev-only UI, and visual + size verification |
 
 ### ai-architect-core
 
