@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketplace`. It distributes three plugins:
+This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketplace`. It distributes four plugins:
 
 - **`ai-architect-core`** — a stack-agnostic requirements engineering and system modeling toolkit with skills for
   creating requirements catalogs, entity models, use case diagrams, and use case specifications.
@@ -16,10 +16,15 @@ This is a **Claude Code plugin marketplace** called `liitu-ai-architect-marketpl
   project-level implementation guidelines (UI component reuse, styling rules, conventions), structured use
   case implementation plans, code review against the project conventions, and capturing GitHub issues with a
   root cause analysis (spec gaps, code defects, test and review gaps) through guided interaction.
+- **`ai-architect-product`** — the Product Owner toolkit, grounded in the Scrum Guide 2020 and the
+  Evidence-Based Management Guide 2024, with skills for writing the product vision with a measurable Product
+  Goal (`docs/vision.md`), maintaining the ordered Product Backlog (`docs/backlog.md`), and preparing store
+  submissions: listing texts for the Apple App Store and Google Play within the stores' character limits, and
+  device-exact store screenshots captured with the project's Playwright E2E fixtures.
 
 ## Repository Structure
 
-The repo has four layers:
+The repo has five layers:
 
 - **Root level** — marketplace configuration (`.claude-plugin/marketplace.json`)
 - **`ai-architect-core/`** — the core plugin, containing its own `.claude-plugin/plugin.json`, `skills/`, and
@@ -30,6 +35,8 @@ The repo has four layers:
 - **`ai-architect-dev-tools/`** — the dev tools plugin, containing its own `.claude-plugin/plugin.json`,
   `.mcp.json` (context7, used by the `guidelines` skill for library documentation lookup), `skills/`, and
   `commands/` directories
+- **`ai-architect-product/`** — the Product Owner plugin, containing its own `.claude-plugin/plugin.json`,
+  `skills/`, and `commands/` directories (no MCP servers; the store skills reuse the project's Playwright setup)
 
 Each plugin ships both **skills** (`skills/<name>/SKILL.md`) and **slash commands**
 (`commands/ai-<name>.md`). Commands are thin wrappers that delegate to the skill of the same name; they exist
@@ -52,6 +59,19 @@ Skills live in `<plugin>/skills/<skill-name>/SKILL.md`. Some skills have support
 - `ai-architect-dev-tools/skills/issue/templates/` — issue body templates (`issue-bug.md`,
   `issue-change-request.md`, `issue-technical.md`) and GitHub issue forms (`github/ISSUE_TEMPLATE/`) that the `issue` skill installs
   into a project on request
+- `ai-architect-product/skills/product-vision/templates/vision.md` — template for `docs/vision.md` (future state,
+  vision statement, Product Goal block, stakeholders, scope boundaries)
+- `ai-architect-product/skills/product-backlog/REFERENCE.md` — the shared Scrum / EBM vocabulary: pillars,
+  artifact commitments (Product Goal, Sprint Goal, Definition of Done), Product Owner accountability and
+  stances, ordering factors, Key Value Areas, English → German glossary. Read it before touching any Scrum
+  wording in a skill
+- `ai-architect-product/skills/product-backlog/templates/backlog.md` — template for `docs/backlog.md`
+- `ai-architect-product/skills/store-listing/REFERENCE.md` — dated store specifications (Apple / Google text
+  limits, screenshot slots and pixel sizes, distribution notes); also used by `store-screenshots`
+- `ai-architect-product/skills/store-listing/templates/` — listing templates per store (`apple.md`, `google.md`)
+  with `<!-- chars: n / limit -->` markers
+- `ai-architect-product/skills/store-screenshots/templates/` — Playwright config with one project per store slot
+  (`metadata.storeSize` for sharp resizing) and the screenshot spec
 
 ## Skill Authoring Conventions
 
@@ -64,9 +84,14 @@ All skills follow these patterns:
   `docs/entity_model.md`, `docs/use_cases.md`, `docs/use_cases/{name}.md`, `docs/guidelines/`,
   `docs/implementation/{uc}/plan.md`, `docs/test-plans/{feature-name}.md`,
   `docs/user-guides/UC-XXX_{name}_Guide.md` plus the converted `.docx`,
-  `docs/user-guides/templates/{user-guide|app-manual}-template.md`). Exceptions: `testing-concept`
-  writes `TESTING.md` at the project root; `commit`, `code-review`, and `issue` produce no document (a git commit,
-  a findings report, and a GitHub issue created via `gh`, respectively).
+  `docs/user-guides/templates/{user-guide|app-manual}-template.md`, `docs/vision.md`, `docs/backlog.md`).
+  Exceptions: `testing-concept` writes `TESTING.md` at the project root; `store-listing` and `store-screenshots`
+  write release assets under `resources/store/<lang>/` (plus the screenshot spec under `scripts/store/`);
+  `commit`, `code-review`, and `issue` produce no document (a git commit, a findings report, and a GitHub issue
+  created via `gh`, respectively).
+- **Scrum vocabulary**: skills say _order_ (never _priority_) for the Product Backlog, _Product Goal_ /
+  _Sprint Goal_ / _Definition of Done_ for the three commitments, and formulate goals as outcomes. The binding
+  definitions are in `ai-architect-product/skills/product-backlog/REFERENCE.md`.
 - **Quality checks**: Skills include validation checklists at the end of their workflows.
 - **Pipeline position**: Every skill reads the artifacts earlier skills produced and writes one artifact of its
   own (see the Development Workflow section in `README.md`). The `issue` skill closes the loop: it reads the
@@ -135,6 +160,7 @@ The project uses Claude Code hooks (`.claude/settings.json`):
 claude --plugin-dir ./ai-architect-core
 claude --plugin-dir ./ai-architect-testing
 claude --plugin-dir ./ai-architect-dev-tools
+claude --plugin-dir ./ai-architect-product
 ```
 
 After changes, run `/reload-plugins` inside Claude Code to pick up updates without restarting.

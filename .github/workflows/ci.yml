@@ -37,7 +37,7 @@ jobs:
       - name: Check skill/command parity
         run: |
           status=0
-          for plugin in ai-architect-core ai-architect-testing ai-architect-dev-tools; do
+          for plugin in ai-architect-core ai-architect-testing ai-architect-dev-tools ai-architect-product; do
             for skill in "$plugin"/skills/*/; do
               name=$(basename "$skill")
               if [ ! -f "$plugin/commands/ai-$name.md" ]; then

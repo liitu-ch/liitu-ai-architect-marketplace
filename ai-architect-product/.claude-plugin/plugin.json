@@ -1,0 +1,10 @@
+{
+  "name": "ai-architect-product",
+  "description": "Product Owner toolkit for Claude, grounded in Scrum and Evidence-Based Management — write the product vision with a measurable Product Goal, maintain an ordered Product Backlog, and prepare App Store / Google Play submissions (store listing texts with character limits and device-exact screenshots captured with Playwright) through guided slash commands.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Sandro Scalco",
+    "email": "sandro.scalco@liitu.ch",
+    "url": "https://liitu.ch"
+  }
+}
